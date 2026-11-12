@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Resumen diario Rapidauto</title>
+<style>
+:root{--bg:#f7f6fb;--card:#fff;--ink:#1f1b2e;--muted:#6b6878;--line:#D9D8DB;--acc:#623DE9;--acc2:#A08AF3;--lav:#EAE7F9;--sky:#81C5F2;--skyt:#2B7BB9;--gris:#D0CDCE;--neg:#b23b2e;--hd:#623DE9;--hdt:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141220;--card:#1d1a2b;--ink:#eceaf5;--muted:#a19db3;--line:#34304a;--acc:#A08AF3;--acc2:#7d66e0;--lav:#2b2550;--sky:#81C5F2;--skyt:#81C5F2;--gris:#3a3742;--neg:#ef8a7c;--hd:#623DE9;--hdt:#fff}}
+:root[data-theme="dark"]{--bg:#141220;--card:#1d1a2b;--ink:#eceaf5;--muted:#a19db3;--line:#34304a;--acc:#A08AF3;--acc2:#7d66e0;--lav:#2b2550;--sky:#81C5F2;--skyt:#81C5F2;--gris:#3a3742;--neg:#ef8a7c;--hd:#623DE9;--hdt:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:960px;margin:0 auto;padding:32px 16px 48px}
+.marca{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc2);font-weight:700}
+h1{font-size:26px;margin:4px 0 2px;letter-spacing:-.01em;color:var(--acc)}
+h2{font-size:15px;margin:32px 0 12px;color:var(--acc);font-weight:650}
+.meta{color:var(--acc);margin:0;font-weight:500}
+.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}
+.ctl input{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-width:170px}
+.ctl input:focus{outline:2px solid var(--acc2);border-color:var(--acc2)}
+#fnota{min-height:18px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:24px}
+td.pend{color:var(--muted);font-style:italic}
+.tile{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--acc);border-radius:10px;padding:14px 16px 16px}
+.tile.sky{border-top-color:var(--sky)}
+.tile .t{font-size:13px;color:var(--muted);font-weight:500}
+.tile .v{font-size:28px;font-weight:650;font-variant-numeric:tabular-nums;margin:2px 0}
+.delta{display:block;font-size:12.5px;color:var(--muted)}.delta.up{color:var(--acc)}.delta.down{color:var(--neg)}
+.tabla{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:10px 14px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card)}
+thead th,thead th:first-child{background:var(--hd);color:var(--hdt);font-size:12.5px;font-weight:600;border-bottom:0}
+td.sub{padding-left:26px;color:var(--muted)}
+tr.tot td,tr.tot td:first-child{font-weight:650;background:var(--lav)}
+tr.var td,tr.var td:first-child{background:var(--lav)}
+tr.grp td,tr.grp td:first-child{background:var(--gris);font-weight:600;color:var(--ink);font-size:12.5px;padding-top:7px;padding-bottom:7px}
+tbody tr:last-child td{border-bottom:0}
+svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.l-car,.l-deu{fill:none;stroke-width:2.5}.l-car{stroke:var(--acc)}.l-deu{stroke:var(--sky)}
+.lbl-car{fill:var(--acc);font-size:12px;font-weight:600}.lbl-deu{fill:var(--skyt);font-size:12px;font-weight:600}
+.ejes text{fill:var(--muted);font-size:11px}
+.nota{color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:16px;margin:0}
+footer{margin-top:32px;font-size:12.5px;color:var(--muted)}
+#candado{max-width:360px;margin:12vh auto 0;padding:0 16px;text-align:center}
+#candado h1{font-size:20px}
+#candado p{color:var(--muted);margin:4px 0 20px}
+#candado .pwbox{position:relative}
+#candado input{width:100%;padding:12px 46px 12px 14px;font-size:16px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+#candado input:focus{outline:2px solid var(--acc2);border-color:var(--acc2)}
+#candado .ojo{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;background:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+#candado .ojo:focus-visible{outline:2px solid var(--acc2);border-radius:6px}
+#candado button[type=submit]{width:100%;margin-top:10px;padding:12px;font-size:15px;font-weight:600;border:0;border-radius:8px;background:#623DE9;color:#fff;cursor:pointer}
+#error{color:var(--neg);font-size:13.5px;min-height:20px;margin-top:10px}
+.badge{display:inline-block;margin:6px 0 2px;padding:3px 10px;border-radius:999px;background:var(--sky);color:#0d2b40;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+</style></head>
+<body>
+<form id="candado" autocomplete="off">
+  <div class="marca">Rapidauto</div>
+  <h1>Resumen financiero diario</h1>
+  <p>Contenido confidencial. Ingresa la contraseña.</p>
+  <div class="pwbox"><input id="pw" type="password" placeholder="Contraseña" aria-label="Contraseña" autocapitalize="none" autocorrect="off" autocomplete="off" spellcheck="false" autofocus>
+  <button type="button" class="ojo" id="ojo" aria-label="Mostrar contraseña" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><line id="tacha" x1="3" y1="3" x2="21" y2="21"/></svg></button></div>
+  <button type="submit">Ver reporte</button>
+  <div id="error" role="alert"></div>
+</form>
+<main id="reporte" hidden></main>
+<script>
+const P={salt:"vZTZK++LfS4LvpbN9FeMsQ==",iv:"Ejhfquwa+eLed/4p",data:"vmx++sFJWqgkWZt3ugWWTp8w8Ys5T9fWl0D4w+xjswSKGBWMzxfEsHFNQ0/Dyxlgtu8d0rIqcyso44jX57EaQPFcOVprhY5CzIcYGW4Q4EvdqTBRl0XwjgI/R03YmW9UDw3CgY4/36D9rek+1mHq4mz0NFC4AsIwL5+tq0o3AhdzG7wkhdR9HB2SN2fK18FJYRZ6FKbOrdjGMLnULtBjuOs1P62E+tzCCL5G8NmTxSNuV+JNC50GTT+WT2lYnbQhGv5Hj9IhcRLgsIOdFU6EXZAAPyQa8olol5tbKXTcfcQ2rVGDD8594iE+vA34hdDVFs3cDTZVRnPORCSdZT1InzLxL6GdorG/UZuPVjlrwKdRnVGbq+oY2hgpmf3b4/Ed3l+jmvv7F/vJvBuNRk+lgpacH/rpJSrB193B4JsidffzGlCWPofjFgGu093C9RJ1C7Ku4hxCXgfETys7aTTPTHlSPoIVqQMLPxkujUa29v5Q7Tqfs5DurfHRYd94HJgOhmQIOwxuFeq4VPCDrE/G6x7lCpa5HWorTeCzxAm34LcyXOrSEHkR6CM5OCkI0wn7PrK/CNBCIoMPkPbj/cFTOiA+9AjGlM+z7nF0lk9Ij2NKdI6X7Ov3vqdI7sIzO/h06w3gvuFgVNc/DDl9DewtMSCEMMxNDd/3yTH0/A2gXPXeSa82IUPe9KpzZVq8LipmwqOm1jr2cEJf5TfXrT0M/ABZfA==",iter:310000};
+const b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const DIA=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const dt=s=>{const[a,m,d]=s.split("-").map(Number);return new Date(Date.UTC(a,m-1,d))};
+const ff=(s,an=true)=>{const d=dt(s);return d.getUTCDate()+" "+MES[d.getUTCMonth()]+(an?" "+d.getUTCFullYear():"")};
+const esL=s=>dt(s).getUTCDay()===1;
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pesos=x=>"$"+Math.round(x).toLocaleString("en-US");
+const mdp=x=>"$"+(x/1e6).toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1})+" M";
+const deu=p=>Object.values(p.deuda).reduce((a,c)=>a+c,0);
+const esD=s=>dt(s).getUTCDay()===0;
+const pz=x=>x==null?"—":pesos(x),mz=x=>x==null?"—":mdp(x);
+const dcorto=s=>DIA[dt(s).getUTCDay()].slice(0,3)+" "+ff(s,false);
+let D,VS,PC={};
+const iso=d=>d.toISOString().slice(0,10);
+function diaDe(p){const C=p.corte_cartera;if(!C)return null;const ec=p.en_curso,se=p.colocacion,q=PC[iso(new Date(dt(C).getTime()-864e5))],qe=q&&q.en_curso;
+  if(ec&&ec.desde===C)return{monto:ec.monto,creditos:ec.creditos};
+  if(se&&se.hasta===C)return qe&&qe.desde===se.desde?{monto:se.monto-qe.monto,creditos:se.creditos-qe.creditos}:null;
+  if(ec&&qe&&qe.desde===ec.desde)return{monto:ec.monto-qe.monto,creditos:ec.creditos-qe.creditos};
+  return null}
+function delta(a,b,inv){if(a==null||b==null)return"";const d=a-b;if(Math.abs(d)<0.5)return`<span class="delta">sin cambio vs ${VS}</span>`;
+  const bueno=(d>0)!==!!inv;return`<span class="delta ${bueno?"up":"down"}">${d>0?"+":"−"}${mdp(Math.abs(d)).slice(1)} vs ${VS}</span>`}
+const tile=(t,v,extra,sub,cls)=>`<div class="tile ${cls||""}"><div class="t">${t}</div><div class="v">${v}</div>${sub||""}${extra||""}</div>`;
+const rango=c=>c&&c.desde&&c.hasta?ff(c.desde,false)+" – "+ff(c.hasta,false):"";
+function grafica(cols){
+  if(cols.length<2)return'<p class="nota">La gráfica de tendencia aparece a partir de la segunda semana capturada.</p>';
+  const W=640,H=220,Pd=36,car=cols.map(p=>p.cartera),de=cols.map(deu),all=car.concat(de);
+  const lo=Math.min(...all)*0.95,hi=Math.max(...all)*1.03,n=cols.length;
+  const X=i=>Pd+i*(W-2*Pd)/(n-1),Y=v=>H-Pd-(v-lo)/(hi-lo)*(H-2*Pd);
+  const ln=vs=>vs.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ");
+  const et=cols.map((p,i)=>`<text x="${X(i).toFixed(1)}" y="${H-10}" text-anchor="middle">${ff(p.fecha,false)}</text>`).join("");
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Capital de cartera vs saldo de deuda"><polyline class="l-car" points="${ln(car)}"/><polyline class="l-deu" points="${ln(de)}"/>
+  <text class="lbl-car" x="${X(n-1).toFixed(1)}" y="${(Y(car[n-1])-8).toFixed(1)}" text-anchor="end">Cartera ${mdp(car[n-1])}</text>
+  <text class="lbl-deu" x="${X(n-1).toFixed(1)}" y="${(Y(de[n-1])+16).toFixed(1)}" text-anchor="end">Deuda ${mdp(de[n-1])}</text><g class="ejes">${et}</g></svg>`}
+function pintar(sel){
+  const pts=D.p, diario=D.m==="diario";
+  let i=-1;pts.forEach((p,k)=>{if(p.fecha<=sel)i=k});if(i<0)i=0;
+  const act=pts[i];
+  let cols;
+  if(diario){cols=pts.filter(p=>esD(p.fecha)&&p.fecha<=act.fecha).slice(-8);if(!esD(act.fecha))cols.push(act)}
+  else cols=pts.filter(p=>p.fecha<=act.fecha).slice(-8);
+  const ant=cols.length>1?cols[cols.length-2]:null;
+  VS=diario&&!esD(act.fecha)&&ant?"cierre "+dcorto(ant.fecha):"sem. anterior";
+  const nota=document.getElementById("fnota");
+  nota.textContent=act.fecha!==sel?(diario?"No hay reporte de ese día; se muestra el cierre del "+DIA[dt(act.fecha).getUTCDay()]+" "+ff(act.fecha,false)+".":"Sin datos ese día; se muestra el lunes "+ff(act.fecha,false)+"."):"";
+  document.getElementById("sub").textContent=(diario?"Al cierre del "+DIA[dt(act.fecha).getUTCDay()]+" "+ff(act.fecha):"Semana del lunes "+ff(act.fecha))+" · Actualizado "+ff(D.a);
+  const dA=deu(act),dB=ant?deu(ant):null,af=act.cartera/dA,afB=ant?ant.cartera/dB:null;
+  let dAf="";if(afB!=null){const x=af-afB;dAf=`<span class="delta ${x>=0?"up":"down"}">${x>=0?"+":"−"}${Math.abs(x).toFixed(2)}x vs ${VS}</span>`}
+  const c=act.colocacion,cB=ant&&ant.colocacion;
+  let vC="Pendiente",sC="",dC="";
+  if(c){vC=mdp(c.monto);sC=`<div class="delta">${c.creditos.toLocaleString("en-US")} créditos · ${rango(c)}</div>`;dC=delta(c.monto,cB?cB.monto:null)}
+  const dd=diario?diaDe(act):null;
+  if(dd)sC+=`<div class="delta">Del día (${ff(act.corte_cartera,false)}): ${mdp(dd.monto)} · ${dd.creditos} créd.</div>`;
+  if(diario&&act.en_curso&&act.en_curso.creditos)sC+=`<div class="delta">En curso (${rango(act.en_curso)}): ${mdp(act.en_curso.monto)} · ${act.en_curso.creditos} créd.</div>`;
+  document.getElementById("tiles").innerHTML=[
+    tile("Capital de cartera",mdp(act.cartera),delta(act.cartera,ant?ant.cartera:null),act.corte_cartera?`<div class="delta">Corte ${ff(act.corte_cartera,false)}</div>`:""),
+    tile("Colocación semanal",vC,dC,sC,"sky"),
+    tile("Saldo de deuda",mdp(dA),delta(dA,dB,true)),
+    tile("Saldo en caja",mz(act.caja),delta(act.caja,ant?ant.caja:null),act.fecha_caja?`<div class="delta">Al ${ff(act.fecha_caja,false)}</div>`:""),
+    tile("Aforo cartera/deuda",af.toFixed(2)+"x",dAf)].join("");
+  const ac=Object.keys(act.deuda),n=cols.length+1,g=t=>`<tr class="grp"><td colspan="${n}">${t}</td></tr>`;
+  const fila=(cl,l,f)=>`<tr${cl?` class="${cl}"`:""}><td${cl==="sub"?' class="sub"':""}>${l}</td>${cols.map(f).join("")}</tr>`;
+  const cel=(p,k,fm)=>p.colocacion?`<td>${fm(p.colocacion[k])}</td>`:'<td class="pend">Pendiente</td>';
+  let h=g("Deuda");
+  ac.forEach(a=>{h+=`<tr><td class="sub">${esc(a)}</td>${cols.map(p=>`<td>${pesos(p.deuda[a]||0)}</td>`).join("")}</tr>`});
+  h+=`<tr class="tot"><td>Saldo deuda</td>${cols.map(p=>`<td>${pesos(deu(p))}</td>`).join("")}</tr>`;
+  h+=g("Caja y cartera");
+  h+=`<tr><td>Saldo en caja</td>${cols.map(p=>`<td>${pz(p.caja)}</td>`).join("")}</tr>`;
+  h+=`<tr><td>Capital de cartera</td>${cols.map(p=>`<td>${pesos(p.cartera)}</td>`).join("")}</tr>`;
+  h+=`<tr class="var"><td class="sub">Aforo cartera / deuda</td>${cols.map(p=>`<td>${(p.cartera/deu(p)).toFixed(2)}x</td>`).join("")}</tr>`;
+  h+=g("Colocación semana previa (lun–dom)");
+  h+=`<tr><td>Monto colocado ($)</td>${cols.map(p=>cel(p,"monto",pesos)).join("")}</tr>`;
+  h+=`<tr><td class="sub">Créditos colocados (#)</td>${cols.map(p=>cel(p,"creditos",x=>x.toLocaleString("en-US"))).join("")}</tr>`;
+  if(diario){h+=g("Colocación del día (fecha de corte)");
+    h+=`<tr><td>Monto colocado ($)</td>${cols.map(p=>{const x=diaDe(p);return x?`<td>${pesos(x.monto)}</td>`:'<td class="pend">—</td>'}).join("")}</tr>`;
+    h+=`<tr><td class="sub">Créditos colocados (#)</td>${cols.map(p=>{const x=diaDe(p);return x?`<td>${x.creditos}</td>`:'<td class="pend">—</td>'}).join("")}</tr>`}
+  const th=cols.map(p=>`<th>${diario?dcorto(p.fecha):ff(p.fecha)}</th>`).join("");
+  document.getElementById("tabla").innerHTML=`<table><thead><tr><th>Concepto</th>${th}</tr></thead><tbody>${h}</tbody></table>`;
+  document.getElementById("graf").innerHTML=grafica(cols);
+}
+function montar(){
+  const m=document.getElementById("reporte"),pts=D.p,diario=D.m==="diario";
+  m.innerHTML=`<div class="top"><header><div class="marca">${esc(D.e)}</div><h1>${diario?"Resumen financiero diario":"Resumen financiero semanal"}</h1><p class="meta" id="sub"></p></header>
+  <label class="ctl">${diario?"Ver cierre del día":"Ver semana (lunes)"}<input type="date" id="f" min="${pts[0].fecha}" max="${pts[pts.length-1].fecha}" value="${pts[pts.length-1].fecha}"${diario?"":' step="7"'}><span id="fnota"></span></label></div>
+  <section class="tiles" id="tiles"></section><section><h2>${diario?"Cierres semanales (domingo) y día elegido":"Histórico semanal"}</h2><div class="tabla" id="tabla"></div></section>
+  <section><h2>Cartera vs deuda</h2><div id="graf"></div></section><footer>Información confidencial.</footer>`;
+  const f=document.getElementById("f");
+  f.addEventListener("change",()=>{if(f.value)pintar(f.value)});
+  pintar(f.value);m.hidden=false;
+}
+document.getElementById("ojo").addEventListener("click",()=>{const i=document.getElementById("pw"),o=document.getElementById("ojo"),ver=i.type==="password";
+  i.type=ver?"text":"password";o.setAttribute("aria-pressed",ver);o.setAttribute("aria-label",ver?"Ocultar contraseña":"Mostrar contraseña");
+  document.getElementById("tacha").style.display=ver?"none":"";i.focus()});
+document.getElementById("candado").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const err=document.getElementById("error");
+  if(!(window.crypto&&crypto.subtle)||typeof DecompressionStream==="undefined"){err.textContent="Este visor no puede abrir el reporte. Descarga el archivo y ábrelo en Chrome, Safari o Edge.";return}
+  err.textContent="Verificando…";
+  let plano;
+  try{
+    const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(document.getElementById("pw").value.trim()),"PBKDF2",false,["deriveKey"]);
+    const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b(P.salt),iterations:P.iter,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"]);
+    plano=await crypto.subtle.decrypt({name:"AES-GCM",iv:b(P.iv)},key,b(P.data));
+  }catch(x){err.textContent="Contraseña incorrecta.";return}
+  try{
+    const txt=await new Response(new Blob([plano]).stream().pipeThrough(new DecompressionStream("gzip"))).text();
+    D=JSON.parse(txt);D.p.sort((a,c)=>a.fecha<c.fecha?-1:1);D.p.forEach(p=>{if(p.corte_cartera)PC[p.corte_cartera]=p});
+    document.getElementById("candado").remove();montar();
+  }catch(x){err.textContent="Tu navegador no puede abrir este reporte. Ábrelo con Chrome, Edge o Safari actualizados."}
+});
+</script>
+</body></html>
