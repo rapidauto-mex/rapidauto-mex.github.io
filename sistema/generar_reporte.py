@@ -36,60 +36,94 @@ PAGINA = r'''<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>__TITULO__</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preload" href="assets/fonts/google-sans-500.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-:root{--bg:#f7f6fb;--card:#fff;--ink:#1f1b2e;--muted:#6b6878;--line:#D9D8DB;--acc:#623DE9;--acc2:#A08AF3;--lav:#EAE7F9;--sky:#81C5F2;--skyt:#2B7BB9;--gris:#D0CDCE;--neg:#b23b2e;--hd:#623DE9;--hdt:#fff}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141220;--card:#1d1a2b;--ink:#eceaf5;--muted:#a19db3;--line:#34304a;--acc:#A08AF3;--acc2:#7d66e0;--lav:#2b2550;--sky:#81C5F2;--skyt:#81C5F2;--gris:#3a3742;--neg:#ef8a7c;--hd:#623DE9;--hdt:#fff}}
-:root[data-theme="dark"]{--bg:#141220;--card:#1d1a2b;--ink:#eceaf5;--muted:#a19db3;--line:#34304a;--acc:#A08AF3;--acc2:#7d66e0;--lav:#2b2550;--sky:#81C5F2;--skyt:#81C5F2;--gris:#3a3742;--neg:#ef8a7c;--hd:#623DE9;--hdt:#fff}
+@font-face{font-family:"Google Sans";src:url(assets/fonts/google-sans-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Google Sans";src:url(assets/fonts/google-sans-500.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Google Sans";src:url(assets/fonts/google-sans-700.woff2) format("woff2");font-weight:600 700;font-display:swap}
+:root{--bg:#F6F5FB;--card:#fff;--ink:#1d1934;--muted:#6b6880;--line:#E4E2EA;--acc:#623DE9;--acc2:#A08AF3;--lav:#EAE7F9;--sky:#7DC7F2;--skyt:#2B7BB9;--menta:#B1FF96;--mentat:#3d8a24;--gris:#D0CDCE;--gris2:#D9D8DB;--neg:#c0392b;--hd:#623DE9;--hdt:#fff;--sombra:0 1px 2px rgba(29,25,52,.04),0 4px 16px rgba(98,61,233,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13111d;--card:#1c1a29;--ink:#eceaf5;--muted:#a19db3;--line:#2f2b42;--acc:#A08AF3;--acc2:#7d66e0;--lav:#2a2448;--sky:#7DC7F2;--skyt:#7DC7F2;--menta:#B1FF96;--mentat:#B1FF96;--gris:#36333f;--gris2:#2c2a35;--neg:#ef8a7c;--hd:#4b2ec4;--hdt:#fff;--sombra:none}}
+:root[data-theme="dark"]{--bg:#13111d;--card:#1c1a29;--ink:#eceaf5;--muted:#a19db3;--line:#2f2b42;--acc:#A08AF3;--acc2:#7d66e0;--lav:#2a2448;--sky:#7DC7F2;--skyt:#7DC7F2;--menta:#B1FF96;--mentat:#B1FF96;--gris:#36333f;--gris2:#2c2a35;--neg:#ef8a7c;--hd:#4b2ec4;--hdt:#fff;--sombra:none}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{max-width:960px;margin:0 auto;padding:32px 16px 48px}
-.marca{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc2);font-weight:700}
-h1{font-size:26px;margin:4px 0 2px;letter-spacing:-.01em;color:var(--acc)}
-h2{font-size:15px;margin:32px 0 12px;color:var(--acc);font-weight:650}
-.meta{color:var(--acc);margin:0;font-weight:500}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Google Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:1000px;margin:0 auto;padding:28px 18px 48px}
+.logo{display:block;height:44px;width:auto}
+.barra{height:4px;border-radius:4px;margin:18px 0 22px;background:linear-gradient(90deg,var(--acc) 0 55%,var(--acc2) 55% 75%,var(--sky) 75% 90%,var(--menta) 90%)}
+h1{font-size:30px;margin:0 0 2px;letter-spacing:-.015em;color:var(--acc);font-weight:700;line-height:1.15}
+h2{display:flex;align-items:center;gap:10px;font-size:16px;margin:36px 0 12px;color:var(--acc);font-weight:600}
+h2::before{content:"";width:4px;height:18px;border-radius:2px;background:var(--acc2)}
+.meta{color:var(--muted);margin:2px 0 0;font-weight:500}
 .top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between}
-.ctl{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}
-.ctl input{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-width:170px}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500}
+.ctl input{font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);min-width:180px;box-shadow:var(--sombra)}
 .ctl input:focus{outline:2px solid var(--acc2);border-color:var(--acc2)}
 #fnota{min-height:18px}
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:24px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-top:22px}
 td.pend{color:var(--muted);font-style:italic}
-.tile{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--acc);border-radius:10px;padding:14px 16px 16px}
-.tile.sky{border-top-color:var(--sky)}
+.tile{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--acc);border-radius:14px;padding:16px 18px 18px;box-shadow:var(--sombra)}
+.tile.sky{border-top-color:var(--sky)}.tile.lila{border-top-color:var(--acc2)}.tile.menta{border-top-color:var(--menta)}
+.tile.dest{background:var(--lav)}
 .tile .t{font-size:13px;color:var(--muted);font-weight:500}
-.tile .v{font-size:28px;font-weight:650;font-variant-numeric:tabular-nums;margin:2px 0}
-.delta{display:block;font-size:12.5px;color:var(--muted)}.delta.up{color:var(--acc)}.delta.down{color:var(--neg)}
-.tabla{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.tile .v{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;margin:4px 0 6px;letter-spacing:-.01em}
+.delta{display:block;font-size:12.5px;color:var(--muted)}.delta.up{color:var(--acc);font-weight:500}.delta.down{color:var(--neg);font-weight:500}
+.tabla{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sombra)}
 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
 th,td{padding:10px 14px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
 th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card)}
 thead th,thead th:first-child{background:var(--hd);color:var(--hdt);font-size:12.5px;font-weight:600;border-bottom:0}
 td.sub{padding-left:26px;color:var(--muted)}
-tr.tot td,tr.tot td:first-child{font-weight:650;background:var(--lav)}
-tr.var td,tr.var td:first-child{background:var(--lav)}
-tr.grp td,tr.grp td:first-child{background:var(--gris);font-weight:600;color:var(--ink);font-size:12.5px;padding-top:7px;padding-bottom:7px}
+tr.tot td,tr.tot td:first-child{font-weight:700;background:var(--gris2)}
+tr.var td,tr.var td:first-child{background:var(--lav);color:var(--acc);font-weight:600}
+tr.grp td,tr.grp td:first-child{background:var(--gris);font-weight:600;color:var(--ink);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding-top:7px;padding-bottom:7px}
 tbody tr:last-child td{border-bottom:0}
-svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
-.l-car,.l-deu{fill:none;stroke-width:2.5}.l-car{stroke:var(--acc)}.l-deu{stroke:var(--sky)}
-.lbl-car{fill:var(--acc);font-size:12px;font-weight:600}.lbl-deu{fill:var(--skyt);font-size:12px;font-weight:600}
+svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sombra)}
+.l-car,.l-deu{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.l-car{stroke:var(--acc)}.l-deu{stroke:var(--sky)}
+.pt-car{fill:var(--acc)}.pt-deu{fill:var(--sky)}
+.lbl-car{fill:var(--acc);font-size:12px;font-weight:700}.lbl-deu{fill:var(--skyt);font-size:12px;font-weight:700}
 .ejes text{fill:var(--muted);font-size:11px}
-.nota{color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:16px;margin:0}
-footer{margin-top:32px;font-size:12.5px;color:var(--muted)}
-#candado{max-width:360px;margin:12vh auto 0;padding:0 16px;text-align:center}
-#candado h1{font-size:20px}
+.nota{color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:16px;margin:0}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:10px}
+footer img{height:20px;width:auto;opacity:.9}
+#candado{max-width:380px;margin:12vh auto 0;padding:32px 28px 28px;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sombra)}
+#candado .logo{height:52px;margin:0 auto 18px}
+#candado h1{font-size:22px}
 #candado p{color:var(--muted);margin:4px 0 20px}
 #candado .pwbox{position:relative}
-#candado input{width:100%;padding:12px 46px 12px 14px;font-size:16px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+#candado input{width:100%;font:inherit;padding:12px 46px 12px 14px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
 #candado input:focus{outline:2px solid var(--acc2);border-color:var(--acc2)}
 #candado .ojo{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;background:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 #candado .ojo:focus-visible{outline:2px solid var(--acc2);border-radius:6px}
-#candado button[type=submit]{width:100%;margin-top:10px;padding:12px;font-size:15px;font-weight:600;border:0;border-radius:8px;background:#623DE9;color:#fff;cursor:pointer}
+#candado button[type=submit]{width:100%;margin-top:12px;padding:12px;font:inherit;font-size:15px;font-weight:600;border:0;border-radius:10px;background:#623DE9;color:#fff;cursor:pointer}
+#candado button[type=submit]:hover{background:#5230d4}
 #error{color:var(--neg);font-size:13.5px;min-height:20px;margin-top:10px}
 .badge{display:inline-block;margin:6px 0 2px;padding:3px 10px;border-radius:999px;background:var(--sky);color:#0d2b40;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+/* Estilo minimalista */
+:root{--bg:#fff;--grp:#F6F5FB}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--grp:#24213a}}
+:root[data-theme="dark"]{--grp:#24213a}
+main{max-width:1040px}
+.logo{height:40px}
+h1{color:var(--ink);font-size:34px;margin-top:22px}
+h1::after{content:"";display:block;width:56px;height:4px;border-radius:2px;background:var(--acc);margin-top:10px}
+.meta{margin-top:10px}
+.tiles{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--line);grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px}
+.tile{border:0;border-radius:0;box-shadow:none;padding:20px 22px}
+.tile .t{text-transform:uppercase;letter-spacing:.06em;font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:8px}
+.tile .t::before{content:"";flex:none;width:10px;height:10px;border-radius:3px;background:var(--acc)}
+.tile.sky .t::before{background:var(--sky)}.tile.lila .t::before{background:var(--acc2)}.tile.menta .t::before{background:var(--menta);box-shadow:inset 0 0 0 1px #8fd973}
+.tile.dest{background:var(--lav)}
+.tile .v{font-size:32px}
+h2{color:var(--ink)}h2::before{background:var(--acc)}
+.tabla,svg,.ctl input{box-shadow:none}
+thead th,thead th:first-child{background:var(--card);color:var(--acc);border-bottom:2px solid var(--acc);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+tr.grp td,tr.grp td:first-child{background:var(--grp);color:var(--acc)}
+#candado{box-shadow:0 8px 30px rgba(29,25,52,.08)}
+#candado h1{margin-top:0}#candado h1::after{margin:10px auto 0}
 </style></head>
 <body>
 <form id="candado" autocomplete="off">
-  <div class="marca">Rapidauto</div>__BADGE__
+  <img class="logo" src="assets/logo.png" alt="RapidAuto">__BADGE__
   <h1>__H1__</h1>
   <p>Contenido confidencial. Ingresa la contraseña.</p>
   <div class="pwbox"><input id="pw" type="password" placeholder="Contraseña" aria-label="Contraseña" autocapitalize="none" autocorrect="off" autocomplete="off" spellcheck="false" autofocus>
@@ -133,7 +167,7 @@ function grafica(cols){
   const et=cols.map((p,i)=>`<text x="${X(i).toFixed(1)}" y="${H-10}" text-anchor="middle">${ff(p.fecha,false)}</text>`).join("");
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Capital de cartera vs saldo de deuda"><polyline class="l-car" points="${ln(car)}"/><polyline class="l-deu" points="${ln(de)}"/>
   <text class="lbl-car" x="${X(n-1).toFixed(1)}" y="${(Y(car[n-1])-8).toFixed(1)}" text-anchor="end">Cartera ${mdp(car[n-1])}</text>
-  <text class="lbl-deu" x="${X(n-1).toFixed(1)}" y="${(Y(de[n-1])+16).toFixed(1)}" text-anchor="end">Deuda ${mdp(de[n-1])}</text><g class="ejes">${et}</g></svg>`}
+  <text class="lbl-deu" x="${X(n-1).toFixed(1)}" y="${(Y(de[n-1])+16).toFixed(1)}" text-anchor="end">Deuda ${mdp(de[n-1])}</text><circle class="pt-car" cx="${X(n-1).toFixed(1)}" cy="${Y(car[n-1]).toFixed(1)}" r="4.5"/><circle class="pt-deu" cx="${X(n-1).toFixed(1)}" cy="${Y(de[n-1]).toFixed(1)}" r="4.5"/><g class="ejes">${et}</g></svg>`}
 function pintar(sel){
   const pts=D.p, diario=D.m==="diario";
   let i=-1;pts.forEach((p,k)=>{if(p.fecha<=sel)i=k});if(i<0)i=0;
@@ -157,9 +191,9 @@ function pintar(sel){
   document.getElementById("tiles").innerHTML=[
     tile("Capital de cartera",mdp(act.cartera),delta(act.cartera,ant?ant.cartera:null),act.corte_cartera?`<div class="delta">Corte ${ff(act.corte_cartera,false)}</div>`:""),
     tile("Colocación semanal",vC,dC,sC,"sky"),
-    tile("Saldo de deuda",mdp(dA),delta(dA,dB,true)),
-    tile("Saldo en caja",mz(act.caja),delta(act.caja,ant?ant.caja:null),act.fecha_caja?`<div class="delta">Al ${ff(act.fecha_caja,false)}</div>`:""),
-    tile("Aforo cartera/deuda",af.toFixed(2)+"x",dAf)].join("");
+    tile("Saldo de deuda",mdp(dA),delta(dA,dB,true),"","lila"),
+    tile("Saldo en caja",mz(act.caja),delta(act.caja,ant?ant.caja:null),act.fecha_caja?`<div class="delta">Al ${ff(act.fecha_caja,false)}</div>`:"","menta"),
+    tile("Aforo cartera/deuda",af.toFixed(2)+"x",dAf,"","dest")].join("");
   const ac=Object.keys(act.deuda),n=cols.length+1,g=t=>`<tr class="grp"><td colspan="${n}">${t}</td></tr>`;
   const fila=(cl,l,f)=>`<tr${cl?` class="${cl}"`:""}><td${cl==="sub"?' class="sub"':""}>${l}</td>${cols.map(f).join("")}</tr>`;
   const cel=(p,k,fm)=>p.colocacion?`<td>${fm(p.colocacion[k])}</td>`:'<td class="pend">Pendiente</td>';
@@ -182,10 +216,10 @@ function pintar(sel){
 }
 function montar(){
   const m=document.getElementById("reporte"),pts=D.p,diario=D.m==="diario";
-  m.innerHTML=`<div class="top"><header><div class="marca">${esc(D.e)}</div><h1>${diario?"Resumen financiero diario":"Resumen financiero semanal"}</h1><p class="meta" id="sub"></p></header>
+  m.innerHTML=`<div class="top"><header><img class="logo" src="assets/logo.png" alt="RapidAuto"><h1>${diario?"Resumen financiero diario":"Resumen financiero semanal"}</h1><p class="meta" id="sub"></p></header>
   <label class="ctl">${diario?"Ver cierre del día":"Ver semana (lunes)"}<input type="date" id="f" min="${pts[0].fecha}" max="${pts[pts.length-1].fecha}" value="${pts[pts.length-1].fecha}"${diario?"":' step="7"'}><span id="fnota"></span></label></div>
   <section class="tiles" id="tiles"></section><section><h2>${diario?"Cierres semanales (domingo) y día elegido":"Histórico semanal"}</h2><div class="tabla" id="tabla"></div></section>
-  <section><h2>Cartera vs deuda</h2><div id="graf"></div></section><footer>Información confidencial.</footer>`;
+  <section><h2>Cartera vs deuda</h2><div id="graf"></div></section><footer><img src="assets/favicon.png" alt="">Información confidencial · RapidAuto</footer>`;
   const f=document.getElementById("f");
   f.addEventListener("change",()=>{if(f.value)pintar(f.value)});
   pintar(f.value);m.hidden=false;
