@@ -96,6 +96,7 @@ svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);b
 .leyenda{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin-top:12px;font-size:13px;color:var(--muted)}
 .leyenda span{display:inline-flex;align-items:center;gap:8px}.sw{display:inline-block;width:18px;height:4px;border-radius:2px}.sw.car{background:var(--acc)}.sw.deu{background:var(--sky)}
 .ejes text{fill:var(--muted);font-size:11px}
+.lbl-mov{fill:var(--acc);font-size:10.5px;font-weight:600}.leyenda .mov{color:var(--acc);font-size:12px}
 .l-caja{fill:none;stroke:var(--mentat);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.l-caja.est{stroke-dasharray:2 6;stroke-width:2.5}
 .pt-caja{fill:var(--mentat)}.lbl-caja{fill:var(--mentat);font-size:11.5px;font-weight:600}.area-caja{fill:var(--menta);opacity:.3}
 .bar{fill:var(--sky)}.bar.fin{opacity:.45}.grid{stroke:var(--line);stroke-width:1}.eje{fill:var(--muted);font-size:10.5px}
@@ -187,7 +188,12 @@ function grafica(cols){
   const an=i=>i===0?"start":i===n-1?"end":"middle",dx=i=>i===0?-6:i===n-1?6:0;
   const pc=car.map((v,i)=>`<circle class="pt-car" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="4"/><text class="lbl-car" x="${(X(i)+dx(i)).toFixed(1)}" y="${(Y(v)-11).toFixed(1)}" text-anchor="${an(i)}">${mdp(v)}</text>`).join("");
   const pd=de.map((v,i)=>{const muestra=i===n-1||i===0||v!==de[i-1];return`<circle class="pt-deu" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${muestra?4:3}"/>`+(muestra?`<text class="lbl-deu" x="${(X(i)+dx(i)).toFixed(1)}" y="${(Y(v)+20).toFixed(1)}" text-anchor="${an(i)}">${mdp(v)}</text>`:"")}).join("");
-  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Capital de cartera vs saldo de deuda"><polyline class="l-car" points="${ln(car)}"/><polyline class="l-deu" points="${ln(de)}"/>${pc}${pd}<g class="ejes">${et}</g></svg>
+  const movs=i=>{if(i===0)return[];const a=cols[i-1].fecha,b=cols[i].fecha,out=[];
+    D.p.forEach((p,k)=>{if(k===0||p.fecha<=a||p.fecha>b)return;const q=D.p[k-1];
+      Object.keys(Object.assign({},q.deuda,p.deuda)).forEach(n=>{const d=(p.deuda[n]||0)-(q.deuda[n]||0);if(Math.abs(d)>=1)out.push((d>0?"+":"−")+mdp(Math.abs(d)).slice(1)+" "+n+" · "+ff(p.fecha,false))})});return out};
+  const pm=de.map((v,i)=>{const m=movs(i);if(!m.length)return"";const y0=Y(v)-14-(m.length-1)*14;
+    return`<text class="lbl-mov" x="${(X(i)+dx(i)).toFixed(1)}" y="${y0.toFixed(1)}" text-anchor="${an(i)}">${m.map((t,k)=>`<tspan x="${(X(i)+dx(i)).toFixed(1)}" dy="${k?14:0}">${esc(t)}</tspan>`).join("")}</text>`}).join("");
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Capital de cartera vs saldo de deuda"><polyline class="l-car" points="${ln(car)}"/><polyline class="l-deu" points="${ln(de)}"/>${pc}${pd}${pm}<g class="ejes">${et}</g></svg>
   <div class="leyenda"><span><i class="sw car"></i>Capital de cartera</span><span><i class="sw deu"></i>Saldo de deuda</span></div>`}
 function grafCaja(act){
   const pts=D.p.filter(p=>p.fecha<=act.fecha).slice(-22);
