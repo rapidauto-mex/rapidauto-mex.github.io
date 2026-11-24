@@ -58,6 +58,11 @@ svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);b
 .leyenda{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin-top:12px;font-size:13px;color:var(--muted)}
 .leyenda span{display:inline-flex;align-items:center;gap:8px}.sw{display:inline-block;width:18px;height:4px;border-radius:2px}.sw.car{background:var(--acc)}.sw.deu{background:var(--sky)}
 .ejes text{fill:var(--muted);font-size:11px}
+.l-caja{fill:none;stroke:var(--mentat);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.l-caja.est{stroke-dasharray:2 6;stroke-width:2.5}
+.pt-caja{fill:var(--mentat)}.lbl-caja{fill:var(--mentat);font-size:11.5px;font-weight:600}.area-caja{fill:var(--menta);opacity:.3}
+.bar{fill:var(--sky)}.bar.fin{opacity:.45}.grid{stroke:var(--line);stroke-width:1}.eje{fill:var(--muted);font-size:10.5px}
+.mk{fill:var(--acc2)}.mkl{stroke:var(--acc2);stroke-dasharray:3 4}.lbl-mk{fill:var(--acc);font-size:11px;font-weight:600}
+.sw.caja{background:var(--mentat)}.sw.bar{background:var(--sky);height:10px;width:12px}.sw.mk{background:var(--acc2);width:10px;height:10px;border-radius:50%}.sw.est{background:none;border-top:3px dotted var(--mentat);height:0;border-radius:0}
 .nota{color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:16px;margin:0}
 footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:10px}
 footer img{height:20px;width:auto;opacity:.9}
@@ -109,7 +114,7 @@ tr.grp td,tr.grp td:first-child{background:var(--grp);color:var(--acc)}
 </form>
 <main id="reporte" hidden></main>
 <script>
-const P={salt:"8CSpYYbjA/K5velpIvWwzA==",iv:"PJp6tYiIDirXubII",data:"QBV9kDgxxk2f1rGfOWPJvpubU1rARi+uKaQl2+cbIp0VsY573/3unPyOORQUx7edHQqbcbu0D7t9SmZ5O/K0SKH0q+g03xbjK6SD1Ln7xDCp8LW6iVqXMFw7UJ5h2wAr8v07iRYNZerQKZcOzMZXVoBrMTsLUvv5mhi3MM/YZmPTti0HI44r0YebSnhwsxntJtRE/PQEhm6vIrPBylHSp1Ozj2DECoRaLcfqnj8UeCTDlYHf2AVcxIjUisTaxg2cz1PoHHa3/jfExp2UiF5xhwtp3QFsgUlW6nFIohTJ2j+1niKXGKV+S93H/HTHCcjYrTe/2ufso9mTV7beClXDlDT0gsv4KBuGNbEf48B2wok0N1FEZ/62drNN1M2CbpqgHUKsjqjBOSB97W6c4gsFw6wxxlA5q7Apsh8mDZDKvLR1qTMz0/H3hWkJnx7+jxMfx/75WS3JOPq4jgUfo5COeoW8navPQE1yOSYH/QhVN2q3tVG0H/2+he1eav16SubtO3pgUzNXFz22OHvn/weXg7sAw1AaVMWvY5o3SL9WNPGqmp9vr+h1Y0LuUamyEWdpF0Cql3jLlNVcIlsrF4A2HXuPylfStGFiRud/nyZ5Wkzme3BoiqAG0gfwonOWFsMcTR9Zgcn8y8uNjiLg19i+LDLHLXYlmqfwuieNtuG9m0xhQ46Wbhsu1ASQG36slkn6G87OybJV6vFrgDZVJRuyjCGuO/5/9yC/xO8lpVI5Fv8fQw5YMj2kuOckR9KyBuOeVxUkvx+zqFe6Zj17pVOt0t7qrcaX6DpmP9kQZkBvJgSgnKbGVMcuJbkmuRnf7WoCxgJUceCaI+ZVTSDekJnURxMFrVdS/gBcNHhvXnHz10ObgKpD6C3GdwlWmUfb/4yBdBGCJwtv5wSJu8DB5e4KADp10BrictQLCRY531RIImH4XxiQcOPAmMiZm1D2OUfzVrzZUVCZfU1iYlqhmyVdpqYOMfi64QZBT6zvBLvjBICn7XGsFA3A0VplUGVCKCSz5GyS4dmaJkjU3tyWPEdrPjcQTYQe4eWezxsMwL1pEQLNuXyJdYOoEzStnh/K8K9MOK0eRmDN+vZL0svqkqWJBUF4lXRuzmpAC6UjvowiL7GOtEm0XSZpd6vbprYCYVQX22dtRw+9Ns6L5j63cQNOr+PxbzpNmwKti3SGvlxG04Z6t8HUPZgJFopmayY+LSVZlCOsQs9o1ocZEeb/8Moe5q77APzChcAzegoigFSkJQMDFrAoSwF+F1NVzVoP8gNsXCMQ5aZ1OaLVul4XmD6/LFo63FYjLLaFeo24TCCFYJvH8GhkorkDk93xaeQ6IortIWIh9zOv7UPNRKqOda/PQUcsbhWVPm8=",iter:310000};
+const P={salt:"u6+i00pThrQrfZB2ZWktrg==",iv:"sBXbSsqnnuKIR2n/",data:"myCcpOqv9pt8tDHmqIsbFZndCNU1nbexa3f+20CuaG/qccwJMkPsFgiczTG8jJS7u8GBiDLUr6d3xAD8BpVk6Gl4GJtBNmqcZ5gYOWBdydGaYFIMTFi+IM2WbNicgqJK8NHP54Wu2nqgSSa+pc2MZNzQ768iIACVt7IHD4ghrPLT71IU3NCVyeC+vnskocEdt7DRnnZbFdMse/dsJ2tp3EYrniSQxup1lReHffhoqIUVKwy/pFWsai57AXRrHRb4aGy71dZH/7R4ErleoRihbOuCHtopjZG9Nmmi26sBnK0a11ZlxHfeGv4n6A82Y5dcG5x1jajT0wcRloOEx/1W+R4urjBndHJNullfPT7ALDLrzoRR1O0ITAiGHpsfswDOLDupXLJYYqplHbAmR/jvWiU02p4WBcJmwHRvfsSA5d4xGXZpe++EEiil/kw4cIQdzdpZMh7idA4bCcFh+m0TQFznZvIPDFS2vh180CEn4R84POcth1jQIpESctUh4zFuXhDBqK4Xqu+CU8Xb6kZ+QvQLoZR5tz6Vsc2elqLAzePcVh54pn5exl22aNT95HpYcVEzjtsASbyHHh1fK2Eb7qQ1Whebpxdtl+GP1KSiuCb6srnLHzYjmseRqP46FtTDwbSapBtaxEf7/fV+j24OugRDe49G3HCdzsOcf6FBSlRb8SzXe8wh4tppK397mFyHPxPh9E8oXxDuV51puIyW958EoLsLNhCywXaKxWhhoO022FgisRn3x65eUkZmB9tEe/08sucDwGFDv2mw7SI+BN0hAAeijZ/yHeDTPnVEyvisr0ZE0Z6fbsSU5cfOzvz4qMf1VXu5+wybxTn0w1L3CLzXqzCeyE6H+sAHC+cG+xMhQEKIITngWvZlCfQfB1xNOsPSepV/ALJ0nRFXCn4xbQWkG6SwDvDLQ4D6xDIGhjhmXf4RIr701KjCevgdios6SFvT3tSGh/ok6QwFj0UMH7z+BN1TVSU/BfKsTfD+Jzn4SuJCnTkMbuXmXUeDNGIuqP9TNgsX3tkPogMfbehoOdLl6rpdKvHux+I1IgBcEpPeJxseYyVpY3czmsU+bNdyW1bsAO/TkUARUHmNGGIB2BjxcwWH2tWtoyNxU4U6p6pm5EUN/QyEl1vBtVRvZWbdFMA/63dGk9EcINIJHkilEuJd0qiAVHxu5+Q1atcLx79b6dXnfVbtErWngvm+vk5STSK953dg84L7Pz+kRmkNYQTpdprUtV2BecGi/myWudIWwvzsIPelTYNKSi+IJmCuQcYRVDg9l3iv6ySG0FO5y6r9dE4jOo/S/wQLl861+LUNze8yQqNxGfeA4z2zGHIxlbdAjbSq5bgnt64RnAI60qz+PEb3PnUfO9nGoIwR0+J35e8=",iter:310000};
 const b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 const DIA=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
@@ -146,6 +151,36 @@ function grafica(cols){
   const pd=de.map((v,i)=>{const muestra=i===n-1||i===0||v!==de[i-1];return`<circle class="pt-deu" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${muestra?4:3}"/>`+(muestra?`<text class="lbl-deu" x="${(X(i)+dx(i)).toFixed(1)}" y="${(Y(v)+20).toFixed(1)}" text-anchor="${an(i)}">${mdp(v)}</text>`:"")}).join("");
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Capital de cartera vs saldo de deuda"><polyline class="l-car" points="${ln(car)}"/><polyline class="l-deu" points="${ln(de)}"/>${pc}${pd}<g class="ejes">${et}</g></svg>
   <div class="leyenda"><span><i class="sw car"></i>Capital de cartera</span><span><i class="sw deu"></i>Saldo de deuda</span></div>`}
+function grafCaja(act){
+  const pts=D.p.filter(p=>p.fecha<=act.fecha).slice(-22);
+  const cols=pts.slice(pts.findIndex(p=>p.caja!=null));
+  if(cols.length<2)return'<p class="nota">La gráfica aparece cuando haya al menos dos cierres con saldo en caja.</p>';
+  const n=cols.length,W=640,H=280,Pl=50,Pr=20,Pt=44,Pb=36,step=(W-Pl-Pr)/n,bw=Math.min(step*0.56,22);
+  const cj=cols.map(p=>p.caja),cd=cols.map(p=>{const x=diaDe(p);return x?x.monto:null}),top=Math.max(...cj.filter(v=>v!=null),...cd.filter(v=>v!=null),1);
+  const st=[1e6,2e6,5e6,10e6,20e6,25e6,50e6,100e6].find(x=>top/x<=5)||200e6,max=Math.ceil(top*1.08/st)*st;
+  const X=i=>Pl+step*(i+0.5),Y=v=>H-Pb-v/max*(H-Pt-Pb),f=v=>v.toFixed(1);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Saldo en caja y colocación diaria">`;
+  for(let v=0;v<=max+1;v+=st)s+=`<line class="grid" x1="${Pl}" x2="${W-Pr}" y1="${f(Y(v))}" y2="${f(Y(v))}"/><text class="eje" x="${Pl-8}" y="${f(Y(v)+4)}" text-anchor="end">${v?"$"+(v/1e6)+" M":"$0"}</text>`;
+  const ok=cj.map((v,i)=>v==null?null:i).filter(i=>i!=null);
+  s+=`<polygon class="area-caja" points="${f(X(ok[0]))},${H-Pb} ${ok.map(i=>f(X(i))+","+f(Y(cj[i]))).join(" ")} ${f(X(ok[ok.length-1]))},${H-Pb}"/>`;
+  cd.forEach((v,i)=>{if(v==null||v<=0)return;const fin=[0,6].includes(dt(cols[i].fecha).getUTCDay());
+    s+=`<rect class="bar${fin?" fin":""}" x="${f(X(i)-bw/2)}" y="${f(Y(v))}" width="${f(bw)}" height="${f(H-Pb-Y(v))}" rx="2"><title>${dcorto(cols[i].fecha)}: ${mdp(v)} colocados</title></rect>`});
+  const habil=s=>{let d=dt(s);while([0,6].includes(d.getUTCDay()))d=new Date(d.getTime()-864e5);return iso(d)},est=i=>!!cols[i].fecha_caja&&cols[i].fecha_caja<habil(cols[i].fecha);
+  for(let k=1;k<ok.length;k++){const a=ok[k-1],b=ok[k];s+=`<line class="l-caja${est(b)?" est":""}" x1="${f(X(a))}" y1="${f(Y(cj[a]))}" x2="${f(X(b))}" y2="${f(Y(cj[b]))}"/>`}
+  const vals=ok.map(i=>cj[i]),last=ok[ok.length-1],imin=ok.slice(0,-1).reduce((m,i)=>cj[i]<cj[m]?i:m,ok[0]),imax=ok.reduce((m,i)=>cj[i]>cj[m]?i:m,ok[0]);
+  const lab=new Set([ok[0],last]);
+  [imax,imin].forEach(i=>{if([...lab].every(j=>Math.abs(i-j)>=3&&Math.abs(cj[i]-cj[j])>0.05*Math.max(cj[i],cj[j],1)))lab.add(i)});
+  ok.forEach(i=>{const v=cj[i],L=lab.has(i),bajo=i===imin&&i!==ok[0]&&i!==last;
+    s+=`<circle class="pt-caja" cx="${f(X(i))}" cy="${f(Y(v))}" r="${L?4:2.5}"><title>${dcorto(cols[i].fecha)}: caja ${mdp(v)}${est(i)?" (sin correo de saldos; se repite el último)":""}</title></circle>`;
+    if(L)s+=`<text class="lbl-caja" x="${f(X(i)+(i===ok[0]?-4:i===last?4:0))}" y="${f(bajo?Y(v)+20:Y(v)-10)}" text-anchor="${i===ok[0]?"start":i===last?"end":"middle"}">${mdp(v)}</text>`});
+  let fila=0;
+  cols.forEach((p,i)=>{if(i===0)return;const q=cols[i-1],cam=Object.keys(p.deuda).filter(k=>Math.abs((p.deuda[k]||0)-(q.deuda[k]||0))>=1);if(!cam.length)return;
+    const t=cam.map(k=>{const d=(p.deuda[k]||0)-(q.deuda[k]||0);return(d>0?"+":"−")+mdp(Math.abs(d)).slice(1)+" "+k}).join(" · ");
+    const y=Pt-20+(fila++%2)*14,der=X(i)>W-170;
+    s+=`<line class="mkl" x1="${f(X(i))}" x2="${f(X(i))}" y1="${y}" y2="${H-Pb}"/><circle class="mk" cx="${f(X(i))}" cy="${y}" r="5"/><text class="lbl-mk" x="${f(X(i)+(der?-9:9))}" y="${y+4}" text-anchor="${der?"end":"start"}">${esc(t)}</text>`});
+  s+=`<g class="ejes">${cols.map((p,i)=>esL(p.fecha)||i===n-1||i===0?`<text x="${f(X(i))}" y="${H-10}" text-anchor="middle">${ff(p.fecha,false)}</text>`:"").join("")}</g></svg>`;
+  const hayEst=ok.some(est);
+  return s+`<div class="leyenda"><span><i class="sw caja"></i>Saldo en caja</span><span><i class="sw bar"></i>Colocación del día</span>${fila?'<span><i class="sw mk"></i>Disposición / pago de deuda</span>':""}${hayEst?'<span><i class="sw est"></i>Sin correo de saldos (se repite el último)</span>':""}</div>`}
 function ajustes(lim){const W={};D.p.forEach(p=>{const c=p.colocacion;if(p.fecha>lim||!c)return;const k=c.desde+"|"+c.hasta;(W[k]=W[k]||[]).push(p)});
   const out={};Object.values(W).forEach(ps=>{const w=ps[0].colocacion,dom=ps.find(p=>p.fecha===w.hasta),u=ps[ps.length-1];if(!dom||u===dom)return;
     const a=dom.colocacion,b=u.colocacion,dn=b.creditos-a.creditos,dm=b.monto-a.monto;if(dn===0&&Math.abs(dm)<1)return;out[dom.fecha]={a,b,u,dn,dm}});return out}
@@ -205,13 +240,14 @@ function pintar(sel){
     const u=Math.min(v/lim,1),pc=Math.round(v/lim*100),disp=lim-v;
     return`<div class="linea"><div class="lhead">${esc(n)}<span>${mdp(v)} de ${mdp(lim)}</span></div><div class="barra2"><i class="${pc>=100?"full":""}" style="width:${(u*100).toFixed(1)}%"></i></div><div class="lsub">${pc}% de la línea · ${disp>0?"disponible "+mdp(disp):"sin disponible"}</div></div>`}).join("");
   document.getElementById("graf").innerHTML=grafica(cols);
+  const g2=document.getElementById("graf2");if(g2)g2.innerHTML=grafCaja(act);
 }
 function montar(){
   const m=document.getElementById("reporte"),pts=D.p,diario=D.m==="diario";
   m.innerHTML=`<div class="top"><header><img class="logo" src="assets/logo.png" alt="RapidAuto"><h1>${diario?"Resumen financiero diario":"Resumen financiero semanal"}</h1><p class="meta" id="sub"></p></header>
   <label class="ctl">${diario?"Ver cierre del día":"Ver semana (lunes)"}<input type="date" id="f" min="${pts[0].fecha}" max="${pts[pts.length-1].fecha}" value="${pts[pts.length-1].fecha}"${diario?"":' step="7"'}><span id="fnota"></span></label></div>
   <section class="tiles" id="tiles"></section><section><h2>Deuda por acreedor</h2><div class="lineas" id="lineas"></div></section><section><h2>${diario?"Cierres semanales (domingo) y día elegido":"Histórico semanal"}</h2><div class="tabla" id="tabla"></div><div id="notas"></div></section>
-  <section><h2>Cartera vs deuda</h2><div id="graf"></div></section><footer><img src="assets/favicon.png" alt="">Información confidencial · RapidAuto</footer>`;
+  <section><h2>Cartera vs deuda</h2><div id="graf"></div></section>${diario?'<section><h2>Caja y colocación diaria</h2><div id="graf2"></div></section>':""}<footer><img src="assets/favicon.png" alt="">Información confidencial · RapidAuto</footer>`;
   const f=document.getElementById("f");
   f.addEventListener("change",()=>{if(f.value)pintar(f.value)});
   pintar(f.value);m.hidden=false;
