@@ -81,6 +81,8 @@ svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);b
 .l-car,.l-deu{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.l-car{stroke:var(--acc)}.l-deu{stroke:var(--sky)}
 .pt-car{fill:var(--acc)}.pt-deu{fill:var(--sky)}
 .lbl-car{fill:var(--acc);font-size:11.5px;font-weight:600}.lbl-deu{fill:var(--skyt);font-size:11.5px;font-weight:600}
+.aj{color:var(--acc);font-weight:700;margin-left:1px}
+.tnota{color:var(--muted);font-size:12.5px;margin:10px 2px 0;padding-left:0;list-style:none}.tnota li{margin:4px 0}.tnota b{color:var(--ink);font-weight:600}
 .leyenda{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin-top:12px;font-size:13px;color:var(--muted)}
 .leyenda span{display:inline-flex;align-items:center;gap:8px}.sw{display:inline-block;width:18px;height:4px;border-radius:2px}.sw.car{background:var(--acc)}.sw.deu{background:var(--sky)}
 .ejes text{fill:var(--muted);font-size:11px}
@@ -172,6 +174,9 @@ function grafica(cols){
   const pd=de.map((v,i)=>{const muestra=i===n-1||i===0||v!==de[i-1];return`<circle class="pt-deu" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${muestra?4:3}"/>`+(muestra?`<text class="lbl-deu" x="${(X(i)+dx(i)).toFixed(1)}" y="${(Y(v)+20).toFixed(1)}" text-anchor="${an(i)}">${mdp(v)}</text>`:"")}).join("");
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Capital de cartera vs saldo de deuda"><polyline class="l-car" points="${ln(car)}"/><polyline class="l-deu" points="${ln(de)}"/>${pc}${pd}<g class="ejes">${et}</g></svg>
   <div class="leyenda"><span><i class="sw car"></i>Capital de cartera</span><span><i class="sw deu"></i>Saldo de deuda</span></div>`}
+function ajustes(lim){const W={};D.p.forEach(p=>{const c=p.colocacion;if(p.fecha>lim||!c)return;const k=c.desde+"|"+c.hasta;(W[k]=W[k]||[]).push(p)});
+  const out={};Object.values(W).forEach(ps=>{const w=ps[0].colocacion,dom=ps.find(p=>p.fecha===w.hasta),u=ps[ps.length-1];if(!dom||u===dom)return;
+    const a=dom.colocacion,b=u.colocacion,dn=b.creditos-a.creditos,dm=b.monto-a.monto;if(dn===0&&Math.abs(dm)<1)return;out[dom.fecha]={a,b,u,dn,dm}});return out}
 function pintar(sel){
   const pts=D.p, diario=D.m==="diario";
   let i=-1;pts.forEach((p,k)=>{if(p.fecha<=sel)i=k});if(i<0)i=0;
@@ -188,7 +193,7 @@ function pintar(sel){
   let dAf="";if(afB!=null){const x=af-afB;dAf=`<span class="delta ${x>=0?"up":"down"}">${x>=0?"+":"−"}${Math.abs(x).toFixed(2)}x vs ${VS}</span>`}
   const c=act.colocacion,cB=ant&&ant.colocacion;
   let vC="Pendiente",sC="",dC="";
-  if(c){vC=mdp(c.monto);sC=`<div class="delta">${c.creditos.toLocaleString("en-US")} créditos · ${rango(c)}</div>`;dC=delta(c.monto,cB?cB.monto:null)}
+  if(c){vC=mdp(c.monto);sC=`<div class="delta">${c.creditos.toLocaleString("en-US")} créditos · ${rango(c)}</div>`;dC=delta(c.monto,cB?cB.monto:null);const aj=ajustes(act.fecha)[c.hasta];if(aj&&act.fecha!==c.hasta)sC+=`<div class="delta">Al cierre del dom: ${aj.a.creditos} créditos · ver nota *</div>`}
   const dd=diario?diaDe(act):null;
   if(dd)sC+=`<div class="delta">Del día (${ff(act.corte_cartera,false)}): ${mdp(dd.monto)} · ${dd.creditos} créd.</div>`;
   if(diario&&act.en_curso&&act.en_curso.creditos)sC+=`<div class="delta">En curso (${rango(act.en_curso)}): ${mdp(act.en_curso.monto)} · ${act.en_curso.creditos} créd.</div>`;
@@ -200,7 +205,8 @@ function pintar(sel){
     tile("Aforo cartera/deuda",af.toFixed(2)+"x",dAf,"","dest")].join("");
   const ac=Object.keys(act.deuda),n=cols.length+1,g=t=>`<tr class="grp"><td colspan="${n}">${t}</td></tr>`;
   const fila=(cl,l,f)=>`<tr${cl?` class="${cl}"`:""}><td${cl==="sub"?' class="sub"':""}>${l}</td>${cols.map(f).join("")}</tr>`;
-  const cel=(p,k,fm)=>p.colocacion?`<td>${fm(p.colocacion[k])}</td>`:'<td class="pend">Pendiente</td>';
+  const AJ=ajustes(act.fecha);
+  const cel=(p,k,fm)=>p.colocacion?`<td>${fm(p.colocacion[k])}${AJ[p.fecha]?'<sup class="aj">*</sup>':''}</td>`:'<td class="pend">Pendiente</td>';
   let h=g("Deuda");
   ac.forEach(a=>{h+=`<tr><td class="sub">${esc(a)}</td>${cols.map(p=>`<td>${pesos(p.deuda[a]||0)}</td>`).join("")}</tr>`});
   h+=`<tr class="tot"><td>Saldo deuda</td>${cols.map(p=>`<td>${pesos(deu(p))}</td>`).join("")}</tr>`;
@@ -210,19 +216,23 @@ function pintar(sel){
   h+=`<tr class="var"><td class="sub">Aforo cartera / deuda</td>${cols.map(p=>`<td>${(p.cartera/deu(p)).toFixed(2)}x</td>`).join("")}</tr>`;
   h+=g("Colocación semana previa (lun–dom)");
   h+=`<tr><td>Monto colocado ($)</td>${cols.map(p=>cel(p,"monto",pesos)).join("")}</tr>`;
-  h+=`<tr><td class="sub">Créditos colocados (#)</td>${cols.map(p=>cel(p,"creditos",x=>x.toLocaleString("en-US"))).join("")}</tr>`;
+  h+=`<tr><td class="sub">Créditos colocados (#, por fecha de compra)</td>${cols.map(p=>cel(p,"creditos",x=>x.toLocaleString("en-US"))).join("")}</tr>`;
   if(diario){h+=g("Colocación del día (fecha de corte)");
     h+=`<tr><td>Monto colocado ($)</td>${cols.map(p=>{const x=diaDe(p);return x?`<td>${pesos(x.monto)}</td>`:'<td class="pend">—</td>'}).join("")}</tr>`;
-    h+=`<tr><td class="sub">Créditos colocados (#)</td>${cols.map(p=>{const x=diaDe(p);return x?`<td>${x.creditos}</td>`:'<td class="pend">—</td>'}).join("")}</tr>`}
+    h+=`<tr><td class="sub">Créditos colocados (#, por fecha de compra)</td>${cols.map(p=>{const x=diaDe(p);return x?`<td>${x.creditos}</td>`:'<td class="pend">—</td>'}).join("")}</tr>`}
   const th=cols.map(p=>`<th>${diario?dcorto(p.fecha):ff(p.fecha)}</th>`).join("");
   document.getElementById("tabla").innerHTML=`<table><thead><tr><th>Concepto</th>${th}</tr></thead><tbody>${h}</tbody></table>`;
+  const na=cols.filter(p=>AJ[p.fecha]).map(p=>{const x=AJ[p.fecha],n=Math.abs(x.dn),pl=n===1?"crédito":"créditos";
+    return`<li><b>Semana ${rango(x.a)}:</b> cerró el domingo con ${x.a.creditos} créditos (${pesos(x.a.monto)}); en el corte del ${ff(x.u.corte_cartera||x.u.fecha,false)} aparecen ${x.b.creditos} (${pesos(x.b.monto)}). `+
+      (x.dn<0?`${n} ${pl} por ${pesos(-x.dm)} ya no están en el reporte de GLS: se cancelaron o se dieron de baja después del cierre.`:x.dn>0?`${n} ${pl} por ${pesos(x.dm)} se registraron en GLS después del cierre con fecha de compra de esa semana.`:`El monto cambió en ${pesos(Math.abs(x.dm))}.`)+`</li>`});
+  document.getElementById("notas").innerHTML=na.length?`<p class="tnota">* Ajustes después del cierre del domingo. La tabla muestra la cifra al cierre; los ajustes posteriores se explican aquí.</p><ul class="tnota">${na.join("")}</ul>`:"";
   document.getElementById("graf").innerHTML=grafica(cols);
 }
 function montar(){
   const m=document.getElementById("reporte"),pts=D.p,diario=D.m==="diario";
   m.innerHTML=`<div class="top"><header><img class="logo" src="assets/logo.png" alt="RapidAuto"><h1>${diario?"Resumen financiero diario":"Resumen financiero semanal"}</h1><p class="meta" id="sub"></p></header>
   <label class="ctl">${diario?"Ver cierre del día":"Ver semana (lunes)"}<input type="date" id="f" min="${pts[0].fecha}" max="${pts[pts.length-1].fecha}" value="${pts[pts.length-1].fecha}"${diario?"":' step="7"'}><span id="fnota"></span></label></div>
-  <section class="tiles" id="tiles"></section><section><h2>${diario?"Cierres semanales (domingo) y día elegido":"Histórico semanal"}</h2><div class="tabla" id="tabla"></div></section>
+  <section class="tiles" id="tiles"></section><section><h2>${diario?"Cierres semanales (domingo) y día elegido":"Histórico semanal"}</h2><div class="tabla" id="tabla"></div><div id="notas"></div></section>
   <section><h2>Cartera vs deuda</h2><div id="graf"></div></section><footer><img src="assets/favicon.png" alt="">Información confidencial · RapidAuto</footer>`;
   const f=document.getElementById("f");
   f.addEventListener("change",()=>{if(f.value)pintar(f.value)});
