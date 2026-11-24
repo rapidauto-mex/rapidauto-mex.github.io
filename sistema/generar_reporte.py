@@ -19,6 +19,11 @@ datos.json:
 }
 (Por compatibilidad también acepta "semanas" con "lunes" en lugar de "puntos"/"fecha".)
 
+Límites de las líneas de crédito (opcional): "lineas": {"Covalto": 200000000, ...} en datos.json.
+Si datos.json no los trae, se leen de sistema/lineas.enc, cifrado con la misma contraseña
+(el repositorio es público: nunca guardes límites sin cifrar). Para crearlo o cambiarlo:
+  python3 generar_reporte.py --lineas '{"Covalto": 200000000}' CONTRASEÑA
+
 El navegador muestra un selector de fecha: en modo "semanal" solo se puede ver un lunes;
 en modo "diario", cualquier día con datos. El contenido se comprime y se cifra con
 AES-256-GCM (llave PBKDF2-SHA256, 310,000 iteraciones). Sin la contraseña no se ve
@@ -83,6 +88,11 @@ svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);b
 .lbl-car{fill:var(--acc);font-size:11.5px;font-weight:600}.lbl-deu{fill:var(--skyt);font-size:11.5px;font-weight:600}
 .aj{color:var(--acc);font-weight:700;margin-left:1px}
 .tnota{color:var(--muted);font-size:12.5px;margin:10px 2px 0;padding-left:0;list-style:none}.tnota li{margin:4px 0}.tnota b{color:var(--ink);font-weight:600}
+.lineas{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.linea{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+.lhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600}.lhead span{font-variant-numeric:tabular-nums}
+.barra2{height:8px;border-radius:4px;background:var(--grp);margin:10px 0 6px;overflow:hidden}.barra2 i{display:block;height:100%;border-radius:4px;background:var(--acc)}.barra2 i.full{background:var(--acc2)}
+.lsub{font-size:12.5px;color:var(--muted)}
 .leyenda{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin-top:12px;font-size:13px;color:var(--muted)}
 .leyenda span{display:inline-flex;align-items:center;gap:8px}.sw{display:inline-block;width:18px;height:4px;border-radius:2px}.sw.car{background:var(--acc)}.sw.deu{background:var(--sky)}
 .ejes text{fill:var(--muted);font-size:11px}
@@ -226,13 +236,19 @@ function pintar(sel){
     return`<li><b>Semana ${rango(x.a)}:</b> cerró el domingo con ${x.a.creditos} créditos (${pesos(x.a.monto)}); en el corte del ${ff(x.u.corte_cartera||x.u.fecha,false)} aparecen ${x.b.creditos} (${pesos(x.b.monto)}). `+
       (x.dn<0?`${n} ${pl} por ${pesos(-x.dm)} ya no están en el reporte de GLS: se cancelaron o se dieron de baja después del cierre.`:x.dn>0?`${n} ${pl} por ${pesos(x.dm)} se registraron en GLS después del cierre con fecha de compra de esa semana.`:`El monto cambió en ${pesos(Math.abs(x.dm))}.`)+`</li>`});
   document.getElementById("notas").innerHTML=na.length?`<p class="tnota">* Ajustes después del cierre del domingo. La tabla muestra la cifra al cierre; los ajustes posteriores se explican aquí.</p><ul class="tnota">${na.join("")}</ul>`:"";
+  const L=D.l||{};
+  document.getElementById("lineas").innerHTML=Object.entries(act.deuda).map(([n,v])=>{const lim=L[n];
+    if(Math.abs(v)<1)return`<div class="linea"><div class="lhead">${esc(n)}<span>$0</span></div><div class="lsub">Liquidado</div></div>`;
+    if(!lim)return`<div class="linea"><div class="lhead">${esc(n)}<span>${mdp(v)}</span></div><div class="lsub">Saldo dispuesto</div></div>`;
+    const u=Math.min(v/lim,1),pc=Math.round(v/lim*100),disp=lim-v;
+    return`<div class="linea"><div class="lhead">${esc(n)}<span>${mdp(v)} de ${mdp(lim)}</span></div><div class="barra2"><i class="${pc>=100?"full":""}" style="width:${(u*100).toFixed(1)}%"></i></div><div class="lsub">${pc}% de la línea · ${disp>0?"disponible "+mdp(disp):"sin disponible"}</div></div>`}).join("");
   document.getElementById("graf").innerHTML=grafica(cols);
 }
 function montar(){
   const m=document.getElementById("reporte"),pts=D.p,diario=D.m==="diario";
   m.innerHTML=`<div class="top"><header><img class="logo" src="assets/logo.png" alt="RapidAuto"><h1>${diario?"Resumen financiero diario":"Resumen financiero semanal"}</h1><p class="meta" id="sub"></p></header>
   <label class="ctl">${diario?"Ver cierre del día":"Ver semana (lunes)"}<input type="date" id="f" min="${pts[0].fecha}" max="${pts[pts.length-1].fecha}" value="${pts[pts.length-1].fecha}"${diario?"":' step="7"'}><span id="fnota"></span></label></div>
-  <section class="tiles" id="tiles"></section><section><h2>${diario?"Cierres semanales (domingo) y día elegido":"Histórico semanal"}</h2><div class="tabla" id="tabla"></div><div id="notas"></div></section>
+  <section class="tiles" id="tiles"></section><section><h2>Deuda por acreedor</h2><div class="lineas" id="lineas"></div></section><section><h2>${diario?"Cierres semanales (domingo) y día elegido":"Histórico semanal"}</h2><div class="tabla" id="tabla"></div><div id="notas"></div></section>
   <section><h2>Cartera vs deuda</h2><div id="graf"></div></section><footer><img src="assets/favicon.png" alt="">Información confidencial · RapidAuto</footer>`;
   const f=document.getElementById("f");
   f.addEventListener("change",()=>{if(f.value)pintar(f.value)});
@@ -274,10 +290,38 @@ def cargar(d):
     return {"e": d.get("empresa", "Rapidauto"), "a": d["actualizado"], "m": d.get("modo", "semanal"), "p": limpios}
 
 
+LINEAS_ENC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lineas.enc")
+
+
+def _llave(password, salt):
+    return PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=ITER).derive(password.encode("utf-8"))
+
+
+def leer_lineas(password):
+    if not os.path.exists(LINEAS_ENC):
+        return {}
+    with open(LINEAS_ENC, encoding="utf-8") as fh:
+        j = json.load(fh)
+    b = lambda k: base64.b64decode(j[k])
+    return json.loads(AESGCM(_llave(password, b("salt"))).decrypt(b("iv"), b("data"), None))
+
+
+def guardar_lineas(lineas, password):
+    salt, iv = os.urandom(16), os.urandom(12)
+    data = AESGCM(_llave(password, salt)).encrypt(iv, json.dumps(lineas).encode("utf-8"), None)
+    e = lambda x: base64.b64encode(x).decode()
+    with open(LINEAS_ENC, "w", encoding="utf-8") as fh:
+        json.dump({"salt": e(salt), "iv": e(iv), "data": e(data)}, fh)
+
+
 def main(entrada, salida, password):
     with open(entrada, encoding="utf-8") as fh:
         datos = json.load(fh)
-    plano = gzip.compress(json.dumps(cargar(datos), ensure_ascii=False, separators=(",", ":")).encode("utf-8"), 9, mtime=0)
+    carga = cargar(datos)
+    lineas = datos.get("lineas") or leer_lineas(password)
+    if lineas:
+        carga["l"] = lineas
+    plano = gzip.compress(json.dumps(carga, ensure_ascii=False, separators=(",", ":")).encode("utf-8"), 9, mtime=0)
     salt, iv = os.urandom(16), os.urandom(12)
     key = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=ITER).derive(password.encode("utf-8"))
     cifrado = AESGCM(key).encrypt(iv, plano, None)
@@ -293,4 +337,7 @@ def main(entrada, salida, password):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    if sys.argv[1] == "--lineas":
+        guardar_lineas(json.loads(sys.argv[2]), sys.argv[3])
+    else:
+        main(*sys.argv[1:4])

@@ -50,6 +50,11 @@ svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);b
 .lbl-car{fill:var(--acc);font-size:11.5px;font-weight:600}.lbl-deu{fill:var(--skyt);font-size:11.5px;font-weight:600}
 .aj{color:var(--acc);font-weight:700;margin-left:1px}
 .tnota{color:var(--muted);font-size:12.5px;margin:10px 2px 0;padding-left:0;list-style:none}.tnota li{margin:4px 0}.tnota b{color:var(--ink);font-weight:600}
+.lineas{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.linea{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+.lhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600}.lhead span{font-variant-numeric:tabular-nums}
+.barra2{height:8px;border-radius:4px;background:var(--grp);margin:10px 0 6px;overflow:hidden}.barra2 i{display:block;height:100%;border-radius:4px;background:var(--acc)}.barra2 i.full{background:var(--acc2)}
+.lsub{font-size:12.5px;color:var(--muted)}
 .leyenda{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin-top:12px;font-size:13px;color:var(--muted)}
 .leyenda span{display:inline-flex;align-items:center;gap:8px}.sw{display:inline-block;width:18px;height:4px;border-radius:2px}.sw.car{background:var(--acc)}.sw.deu{background:var(--sky)}
 .ejes text{fill:var(--muted);font-size:11px}
@@ -104,7 +109,7 @@ tr.grp td,tr.grp td:first-child{background:var(--grp);color:var(--acc)}
 </form>
 <main id="reporte" hidden></main>
 <script>
-const P={salt:"sA9hyoiY0Vb+CDrs/556UQ==",iv:"Z3vDnESuj1EMa3wV",data:"Mk1D2V//0lv5VIs5tKzdj7LyuucfgNXx3dJMuhT+I0ROdSxdKb7TvK9CS4Ijb0Py7TUaOIettUXIHtkvPDBymUK6fQ64bA5LiZFlwv0j/CwEII813me7Hb3hzVzIP1pCmECGXc3eE71HqxTeRxOypWBtqcY9cfWRczRxyWgs7YjiVIjjPczIMIyxgGtN9UvLWrtICHxOG0DgaVDKZXnkvCGeSZGFjQUjg21GsdMNj+DlRlud6igUGHoHpp9eSOE4GAvFvf9NfGOyMXyXhwY8mMvRuZTzL2neuPPfWKin5/QNhgqIiAVDaDeknRHh+W5vM6Og6kWn0dLb40syoGBaTac+PKjuqMaK8rQs+2u1sWthdVrJc5NPtU+PJCMeWh7OiVYt5FWPJ5bm5vIT/VgzJ126Ut/pT3PlxO9MYdMjFkGY80trwrgrHJEiCsF+l7amR/7UTzA/XXDACDAasqozYV+/kg9AOQh0UzTgiJdC4Awn/ySAjGZxctTjWQKpcObekmBM+T0WOK0b6PO91AWqFV7hrBA3Bz1OiiTTliPQt3IgqcHS5ABFVv0oCTg7zJIKjN7VIlbbTkW8KyyxVV0fOFenjqHvzDI7cBIwufBimID5d90eR1/8e/QBlyMwy+VBfeQ28xockrXEvdGOrHRx250gmrtYgXGNVHs1eoq4SErQJnlXTp+o76IjridRYKTTXYHTsCDqY34DbZWUdgcVXWLQMajoFaVO3/DwhutwxzmKGYaXiY0WKLdDIsWVz5we7FdboQaTpIADR+nBaixt5DXP2c1Q5SMyO/uHTKtUtJTqdmmeSmYJq1mirXwawYg+uHNWLtlra2qL9x/AKklpq4uMlFMw2fVDvgDBZyY+9WDLdewmJA7kWtcxMhhIpId5pD5u88IzFk1nvsguOm2VRlB9g67ykmdpfWvn9R/x7m0mHIvplGdTJQCePvACOBtoFd+LEZyi0CSutjmrTu3zWdsNsWHtDMTL7DCfLXHd4vJtxU/VlxPWNV5AyGHEpNQX1EOYK9kZKg3rVkCt1LFvWHm+z7k5nbDGUTqFXsPO/k8JEvSl8nisWGYYhp5eRSgjlhTAXYJ/tBuAt2eEUDFYTZCVzo1bAq9yA8Rfj0fwqH8fHHleNZElqmzyAzMIHzzmJqtwU5uBQnaSvtEb9GBVckz40JB/jyhVWC/Dsm6sqli1KfLb0siCua5xs2iAQeuM/AL+FeYgjOTY6eVnvDkl4LgVElct2FGyJOA0Jy2yQtFvMKvWVKJ6mtjAAbPeG1nRQHPmPf8Itf9Fn1trdw==",iter:310000};
+const P={salt:"lV8bO7wytpepS89smsovEg==",iv:"IJHLR/Z56WC6eN63",data:"vqEgBpFUOisducbRr+QJgBOJj5ULw4N8lW6ncjSUPcrfNJC//LF5D4whMpWerxKeW+BhUJnQQY8La6BoFu+U9cnuk3HsNNjzBU0jYbUib/pWDjvh0MDN9KJ1cBjZy0fBqky1K5wDOdXoF1yxHSwAldZ72F/j3nuY6HHerzo8Xz4lKx6Oqc6SBf2R3HY3v589Dp2o8oqAGzmCaFAeaJvXkzkDvCxLYLAOz7A7WFCI6+xl5ChHHCNg5/4jSOeNIASdXI4V3qJEpyu63FYis13HTB+Oh5tsDeMGtb4MnhrMzN3jR+x0exJpDi+ZLer00pdFIEVApX4nBbXdva/x7LgJyRS5T0Mnxy9R8uon38o6CKBAtC5rYq53zg6XE2Lsl3AtTwG/7rQ2yiYqxwMB1fZG9kR1yFRst5EcaUTnReRqknwobwDmIRcn4CRMXztA3F7b6F93G4JWlM8pXX/dxosX4KnqeJRStUpuO+vUt7KU7FCqFzj5066mGVCzj0kkSAlx1DEuxGCoxD0/S0zR5SURKERShVpX1Eors/mnE+U3GnBLxEoqnq6XgUdEP0gekQrwinslsbnbEs77LSzmLOcbmKm3IQfiJz9Uwk9P9AVG/LbNTWjfxmgS+4TadlcPTR9vRKNmXMdzdcYy2X35oN+LaiqGbx3hyhAMt+H+haYe7kGlvBdlzbbnnlCgBgrMQyc2O6PAdDrELTk5sNW/bIgs4UTN6tkBbbT0v1RqGnJ4lp4jgv18E+6Py901hWumGqI8k3nOm+Fa5sC6MA6C6f9L7FWOsA8F6LzLY/QBcQ8z44L0Wcd+J/h1b2goOd7T66Cuq6BhqtSUIFJbmb1bc+ELBZlvcvI7N0QZUaycLhKb6kPPHYskn2Fnp93Uh3zYBboQmQSvaYOANJmbjOjn21zGfK6h4BVUm1i5k4EXRhYuZYgqU7cqZiMv4tHGbQkgMYCJL1IijPDc0+RI6bRsY4k6mcZWfPFR0lJ+t25FrtrVnbXSQadjrh/E1QoF90W1C5rcXye1FhxUgykbbJlKo/eGwqVUPqyvRmrxqPhio81+ob0XoIBOHpHYjq6rNDjaJ0ZBXG/SEf7/XbWJxBxPJpAplzduhmds35JCnlanPBoVEF5WX8f6996TWOcseBCKREr6qipcc9shVgN4dO1vXC+3qVNH1BwSowt3EF+tfs6p/ThY+7T10A3NorB0+rv0HA1Ab+SKZ1p2ae7lAW5mb5xKh7r8ggR7sG1cMLZWAEstyGmmstT1fn25Bj7y/ELOrPRQgrJI81zBq6C4uiKYGIVl7vXTqGjg",iter:310000};
 const b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 const DIA=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
@@ -193,13 +198,19 @@ function pintar(sel){
     return`<li><b>Semana ${rango(x.a)}:</b> cerró el domingo con ${x.a.creditos} créditos (${pesos(x.a.monto)}); en el corte del ${ff(x.u.corte_cartera||x.u.fecha,false)} aparecen ${x.b.creditos} (${pesos(x.b.monto)}). `+
       (x.dn<0?`${n} ${pl} por ${pesos(-x.dm)} ya no están en el reporte de GLS: se cancelaron o se dieron de baja después del cierre.`:x.dn>0?`${n} ${pl} por ${pesos(x.dm)} se registraron en GLS después del cierre con fecha de compra de esa semana.`:`El monto cambió en ${pesos(Math.abs(x.dm))}.`)+`</li>`});
   document.getElementById("notas").innerHTML=na.length?`<p class="tnota">* Ajustes después del cierre del domingo. La tabla muestra la cifra al cierre; los ajustes posteriores se explican aquí.</p><ul class="tnota">${na.join("")}</ul>`:"";
+  const L=D.l||{};
+  document.getElementById("lineas").innerHTML=Object.entries(act.deuda).map(([n,v])=>{const lim=L[n];
+    if(Math.abs(v)<1)return`<div class="linea"><div class="lhead">${esc(n)}<span>$0</span></div><div class="lsub">Liquidado</div></div>`;
+    if(!lim)return`<div class="linea"><div class="lhead">${esc(n)}<span>${mdp(v)}</span></div><div class="lsub">Saldo dispuesto</div></div>`;
+    const u=Math.min(v/lim,1),pc=Math.round(v/lim*100),disp=lim-v;
+    return`<div class="linea"><div class="lhead">${esc(n)}<span>${mdp(v)} de ${mdp(lim)}</span></div><div class="barra2"><i class="${pc>=100?"full":""}" style="width:${(u*100).toFixed(1)}%"></i></div><div class="lsub">${pc}% de la línea · ${disp>0?"disponible "+mdp(disp):"sin disponible"}</div></div>`}).join("");
   document.getElementById("graf").innerHTML=grafica(cols);
 }
 function montar(){
   const m=document.getElementById("reporte"),pts=D.p,diario=D.m==="diario";
   m.innerHTML=`<div class="top"><header><img class="logo" src="assets/logo.png" alt="RapidAuto"><h1>${diario?"Resumen financiero diario":"Resumen financiero semanal"}</h1><p class="meta" id="sub"></p></header>
   <label class="ctl">${diario?"Ver cierre del día":"Ver semana (lunes)"}<input type="date" id="f" min="${pts[0].fecha}" max="${pts[pts.length-1].fecha}" value="${pts[pts.length-1].fecha}"${diario?"":' step="7"'}><span id="fnota"></span></label></div>
-  <section class="tiles" id="tiles"></section><section><h2>${diario?"Cierres semanales (domingo) y día elegido":"Histórico semanal"}</h2><div class="tabla" id="tabla"></div><div id="notas"></div></section>
+  <section class="tiles" id="tiles"></section><section><h2>Deuda por acreedor</h2><div class="lineas" id="lineas"></div></section><section><h2>${diario?"Cierres semanales (domingo) y día elegido":"Histórico semanal"}</h2><div class="tabla" id="tabla"></div><div id="notas"></div></section>
   <section><h2>Cartera vs deuda</h2><div id="graf"></div></section><footer><img src="assets/favicon.png" alt="">Información confidencial · RapidAuto</footer>`;
   const f=document.getElementById("f");
   f.addEventListener("change",()=>{if(f.value)pintar(f.value)});
