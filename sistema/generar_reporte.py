@@ -80,7 +80,9 @@ tbody tr:last-child td{border-bottom:0}
 svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sombra)}
 .l-car,.l-deu{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.l-car{stroke:var(--acc)}.l-deu{stroke:var(--sky)}
 .pt-car{fill:var(--acc)}.pt-deu{fill:var(--sky)}
-.lbl-car{fill:var(--acc);font-size:12px;font-weight:700}.lbl-deu{fill:var(--skyt);font-size:12px;font-weight:700}
+.lbl-car{fill:var(--acc);font-size:11.5px;font-weight:600}.lbl-deu{fill:var(--skyt);font-size:11.5px;font-weight:600}
+.leyenda{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin-top:12px;font-size:13px;color:var(--muted)}
+.leyenda span{display:inline-flex;align-items:center;gap:8px}.sw{display:inline-block;width:18px;height:4px;border-radius:2px}.sw.car{background:var(--acc)}.sw.deu{background:var(--sky)}
 .ejes text{fill:var(--muted);font-size:11px}
 .nota{color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:16px;margin:0}
 footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:10px}
@@ -160,14 +162,16 @@ const tile=(t,v,extra,sub,cls)=>`<div class="tile ${cls||""}"><div class="t">${t
 const rango=c=>c&&c.desde&&c.hasta?ff(c.desde,false)+" – "+ff(c.hasta,false):"";
 function grafica(cols){
   if(cols.length<2)return'<p class="nota">La gráfica de tendencia aparece a partir de la segunda semana capturada.</p>';
-  const W=640,H=220,Pd=36,car=cols.map(p=>p.cartera),de=cols.map(deu),all=car.concat(de);
-  const lo=Math.min(...all)*0.95,hi=Math.max(...all)*1.03,n=cols.length;
-  const X=i=>Pd+i*(W-2*Pd)/(n-1),Y=v=>H-Pd-(v-lo)/(hi-lo)*(H-2*Pd);
+  const W=640,H=250,Px=46,Pt=34,Pb=36,car=cols.map(p=>p.cartera),de=cols.map(deu),all=car.concat(de);
+  const lo=Math.min(...all)*0.92,hi=Math.max(...all)*1.03,n=cols.length;
+  const X=i=>Px+i*(W-2*Px)/(n-1),Y=v=>H-Pb-(v-lo)/(hi-lo)*(H-Pt-Pb);
   const ln=vs=>vs.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ");
   const et=cols.map((p,i)=>`<text x="${X(i).toFixed(1)}" y="${H-10}" text-anchor="middle">${ff(p.fecha,false)}</text>`).join("");
-  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Capital de cartera vs saldo de deuda"><polyline class="l-car" points="${ln(car)}"/><polyline class="l-deu" points="${ln(de)}"/>
-  <text class="lbl-car" x="${X(n-1).toFixed(1)}" y="${(Y(car[n-1])-8).toFixed(1)}" text-anchor="end">Cartera ${mdp(car[n-1])}</text>
-  <text class="lbl-deu" x="${X(n-1).toFixed(1)}" y="${(Y(de[n-1])+16).toFixed(1)}" text-anchor="end">Deuda ${mdp(de[n-1])}</text><circle class="pt-car" cx="${X(n-1).toFixed(1)}" cy="${Y(car[n-1]).toFixed(1)}" r="4.5"/><circle class="pt-deu" cx="${X(n-1).toFixed(1)}" cy="${Y(de[n-1]).toFixed(1)}" r="4.5"/><g class="ejes">${et}</g></svg>`}
+  const an=i=>i===0?"start":i===n-1?"end":"middle",dx=i=>i===0?-6:i===n-1?6:0;
+  const pc=car.map((v,i)=>`<circle class="pt-car" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="4"/><text class="lbl-car" x="${(X(i)+dx(i)).toFixed(1)}" y="${(Y(v)-11).toFixed(1)}" text-anchor="${an(i)}">${mdp(v)}</text>`).join("");
+  const pd=de.map((v,i)=>{const muestra=i===n-1||i===0||v!==de[i-1];return`<circle class="pt-deu" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${muestra?4:3}"/>`+(muestra?`<text class="lbl-deu" x="${(X(i)+dx(i)).toFixed(1)}" y="${(Y(v)+20).toFixed(1)}" text-anchor="${an(i)}">${mdp(v)}</text>`:"")}).join("");
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Capital de cartera vs saldo de deuda"><polyline class="l-car" points="${ln(car)}"/><polyline class="l-deu" points="${ln(de)}"/>${pc}${pd}<g class="ejes">${et}</g></svg>
+  <div class="leyenda"><span><i class="sw car"></i>Capital de cartera</span><span><i class="sw deu"></i>Saldo de deuda</span></div>`}
 function pintar(sel){
   const pts=D.p, diario=D.m==="diario";
   let i=-1;pts.forEach((p,k)=>{if(p.fecha<=sel)i=k});if(i<0)i=0;
