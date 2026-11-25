@@ -59,6 +59,7 @@ svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);b
 .leyenda span{display:inline-flex;align-items:center;gap:8px}.sw{display:inline-block;width:18px;height:4px;border-radius:2px}.sw.car{background:var(--acc)}.sw.deu{background:var(--sky)}
 .ejes text{fill:var(--muted);font-size:11px}
 .lbl-mov{fill:var(--acc);font-size:10.5px;font-weight:600}.leyenda .mov{color:var(--acc);font-size:12px}
+.mes{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}.mes .t2{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.mes .v2{font-size:22px;font-weight:700;line-height:1.25;margin-top:2px}
 .l-caja{fill:none;stroke:var(--mentat);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.l-caja.est{stroke-dasharray:2 6;stroke-width:2.5}
 .pt-caja{fill:var(--mentat)}.lbl-caja{fill:var(--mentat);font-size:11.5px;font-weight:600}.area-caja{fill:var(--menta);opacity:.3}
 .bar{fill:var(--sky)}.bar.fin{opacity:.45}.grid{stroke:var(--line);stroke-width:1}.eje{fill:var(--muted);font-size:10.5px}
@@ -115,7 +116,7 @@ tr.grp td,tr.grp td:first-child{background:var(--grp);color:var(--acc)}
 </form>
 <main id="reporte" hidden></main>
 <script>
-const P={salt:"fMLIVx3bvi+aIu47UButyQ==",iv:"dBq774m/FoA/oYWv",data:"KnstJ/wQoI1fRbuhrj3yztQ5wZu9a3MwiIPbcQaO0JKWzQlGnRv0ONbE3O9wa6RH1an3qpsDhCN6iXt6I5Q6M1ccv5Py8Q8ph+zcFf5i2xDZC5lLGuKRecuZM2tZE8Z65Xu96xBZOy7HV9e+s11I7DsLeY9/IE7QG1Qp+K539V46kUAOU3Q8jTiEHG2qCN7GXkqrxe3tZxGd28+Oky0Kfrj80NSwQbXBkLJIP0GTeVm5YWnP56sHcjRVLFQLuPeC8qflV6QlUDlyGmEuCXIAExnXAXPKhlZEVgxeK2A2rDUQpNd14vw9pIzcUkE7Tsod5IIxC/7JWC7zz0eqhNfJyU9eV73etIQKijy/GO5MEdaKDYpOqub4nqWPC6eY21y/uPwetJ/o6MLmxIMg4Iokm7moiFhqaZ7dJvvh96PRxbp3+N4P/gJf68BkMv0gP1r/lId2nTdlB+52jpAILl7ND9x3K44LirxGn/TT+SnTnp5rZbyQFeOKfzWT0cbegmJLGvAp1G/uFbYNxovT3ozmARO1YaxndUhspLdyJIN6mxXJFIvdbcVT76YAkEaVtjyFz47O3DBvxjt185Kmotc7saSm7CHx3Qv1d8Yz5pj94QM9+9GeqL251gRL7Vrmlv0gAqKHsJrD0GAKDr+oQDJtJR5qz6puSwQWaDEQLqFVtf+ZbQFjf/Sa1t/gYh7HesN1A52+w1Oe7TRtut8/bdPV3VgkyL+LIQrcYHmOKo7arFMIJSlkKCC0o/N2S+m+OddWGR5dLjfH1/BIRruELtOaq2D3pt5wp2VG86iC8dq2dhZRowctM4SAlidnJs26xqz7TZRzBpyuH8vujCMLJzPU7z52cMMAGL6p9Uo5A3NzH9Y3OwUhNSdfnl37lxIW7dexbHgf9KsEhyXanZyOUw6ySumDQomR47VVD1f5mEhPVYU/UKvVrlnFOXsiryJZxd5OyecWoT5o1Niuj9a3uUV6/+JkEvHFoCvKiq44DHgQYjH7ddTcsniFEyJocISNjsw8hw3uW0qjvdt1zyCqI4AlBV+2z+od8fOdUX3oHDjhdk0/WzAWP8ASp41DDsaUkX3teR7Xnt8V/hLhRAOqejX8/k0/SihfCFrF3a4VfVi5qLWXWL4h5XY3Dn13O2FyjmzVfXfKzxu88y+9x+pwAO1BhGyQqwus7JBk4I8djCpzevK8rhMj954M5W+hWTz/f5NRfwvDe6S/KB0l6D4JhLASuiCz0yy1ZiFYB1rz4Do062oU4qaYEP12sft6tEzetj7HSsDSVYTaFTKGXLUW+JawTuY0JzSctYmcHpv0NRGS+F0isjJrJOaLPUrNQI83P1hIOaiUiDG979Ecs5UCu/XSkU2O0Fvib7MHscvMFl8J5oIGMd4=",iter:310000};
+const P={salt:"+A2knuyiUds+SzVu1UcYVw==",iv:"F98QN+vnmkB8SQrY",data:"nh3h5eInMN4KkvcXs/hqEPKN8NuXECHRdNZMDo9lwH3gDS7fDdb+iWBp5p0xXPOBLOOTrR1Ji3+HvF54MKdBw98OLsR58gFUOekZ09m8nAKXv7/v3EHEZ2zKZht4bcoixj2xEKA4NIoRyw8FBF3mMLmxNiPvauO9sbOGK7o5fz/pEgf1DKBSsXob2Ba6wAjZH+brpA7+ARIMZ1pN8vAVDWIQb42Vo2BTbTrgKJ+OJp1YX54cXOpMk5nYhxIdOzfyKT1nFPtWiy0TSHMsHvBK8lCX/gicA5u3REGzViM89kRu4riNWVXEqmei+Rqd46Ioz9+40ykNBuhJl58bvXk8I5/c/t/5puLSGRUsBf2N7ZhxkXnzk/1wuBo7Ud89NzWt13xniqOH5pO9iNtTE3F58OanO3BuaThU7rHKFCRGMcVzuTR4kP8dXr3Iq1hN6nhkRP2Runsu/VBx/3P58N1BTT/G9gW69jf0zj3wCNJd/ewtUpxc06q8Z57hgTRBXvo8jVl3z1lcez8sMghK176xCHBLP0RB5HbGhYjqkW0m2sBToLo2qmp04c/zmmOn6mdJkhPS7F+nKnX2UHo7c2mpzMelImYTVxM3VRc7C+i/Ya1ddSAUJJBfSEZ43HRZfuogtquNOeXeqmrz71gLT1Sh2Cdp076MBdP3i+8a4bKGNxtleCahzj4vo/MtpTM7cWGb0IVr9P+3T+MnIyE5PcEV5dBnWw5WYeBf3ByGNq9BsgeXGcMAkRZlf3WiNhLSat+W+gUby6eo6DAMKawKpwmCkBHv6jiygqthvHpOx+dlNfg3IHSJz1ScgcWRajQI3u/h1/d87SsirbBctlJgR17Ie7ZEt6WEtulwkJeM8veBG/5OzSwV4yXW4vFiYah7RJN38AUMYoaaRIwEMZ6CfrgZzNLxKuS2xNxh18Ekv8/sBG2fwOsntTgI99Hp91c9bjnS0bMjHtwYAOIPZPRMYxr4SkXuy2zPiiLcZqLGxqJ1rmxuW3PjracUR5yrIUFYVMi9LI+CztPEmt29leG+Lhug5Lk8Ab2JtOltaxB8ewCAjTPuLxQoI17c6HzvIRYq6HQURNddLyAm42JSUW3klBPWukhGmqnPN4+X8boONZObbPPwBZUIbYKNH8UcPDDpAUsGTTSLEVEHS72l6EiVkHjEGzK17nGnV7gsLuac8MrekSP4B79vekbsRRJRTITmX/M0VcXRtI93zdwGy8YbKIfneZrGGTKqTsZc1qtIE7aC4LNRkriVC6zBrR5mEnlhLNufmm9RgqBQ4aSGug2Tsq5J60kktJgiwolrzGmyhB53Yj6iPbwNkxCzGD0wZyswx7UHsctiazYwOv6LtjZmLWK4rXzR1BuLzhKjijiuIq6azN9TZ0qNIeSyfl/JAFYVN74E",iter:310000};
 const b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 const DIA=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
@@ -187,6 +188,19 @@ function grafCaja(act){
   s+=`<g class="ejes">${cols.map((p,i)=>esL(p.fecha)||i===n-1||i===0?`<text x="${f(X(i))}" y="${H-10}" text-anchor="middle">${ff(p.fecha,false)}</text>`:"").join("")}</g></svg>`;
   const hayEst=ok.some(est);
   return s+`<div class="leyenda"><span><i class="sw caja"></i>Saldo en caja</span><span><i class="sw bar"></i>Colocación del día</span>${fila?'<span><i class="sw mk"></i>Disposición / pago de deuda</span>':""}${hayEst?'<span><i class="sw est"></i>Sin correo de saldos (se repite el último)</span>':""}</div>`}
+const lunes=s=>{const d=dt(s);return iso(new Date(d.getTime()-((d.getUTCDay()+6)%7)*864e5))};
+const masD=(s,n)=>iso(new Date(dt(s).getTime()+n*864e5));
+function semanaUlt(desde,lim){let r=null;D.p.forEach(p=>{if(p.fecha<=lim&&p.colocacion&&p.colocacion.desde===desde)r=p.colocacion});return r}
+function curso(f,desde){const p=PC[f]||D.p.find(x=>x.fecha===f),k=(D.k||{})[f];
+  if(p){const e=p.en_curso;if(e&&e.desde===desde)return{monto:e.monto,creditos:e.creditos};if(dt(f).getUTCDay()!==0&&(!e||!e.creditos))return{monto:0,creditos:0}}
+  return k?{monto:k.monto,creditos:k.creditos}:null}
+function mesDe(p){const X=p.corte_cartera;if(!X)return null;const M0=X.slice(0,8)+"01",w0=lunes(M0);let m=0,n=0;
+  for(let w=w0;w<=X;w=masD(w,7)){const fin=masD(w,6);
+    if(fin<=X){const c=semanaUlt(w,p.fecha);if(!c)return null;m+=c.monto;n+=c.creditos}
+    else{const c=curso(X,w);if(!c)return null;m+=c.monto;n+=c.creditos}}
+  if(w0<M0){const prev=masD(M0,-1),c=curso(prev,w0);if(!c)return null;m-=c.monto;n-=c.creditos}
+  return{monto:m,creditos:n,desde:M0,hasta:X}}
+const MESL=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 function ajustes(lim){const W={};D.p.forEach(p=>{const c=p.colocacion;if(p.fecha>lim||!c)return;const k=c.desde+"|"+c.hasta;(W[k]=W[k]||[]).push(p)});
   const out={};Object.values(W).forEach(ps=>{const w=ps[0].colocacion,dom=ps.find(p=>p.fecha===w.hasta),u=ps[ps.length-1];if(!dom||u===dom)return;
     const a=dom.colocacion,b=u.colocacion,dn=b.creditos-a.creditos,dm=b.monto-a.monto;if(dn===0&&Math.abs(dm)<1)return;out[dom.fecha]={a,b,u,dn,dm}});return out}
@@ -206,10 +220,11 @@ function pintar(sel){
   let dAf="";if(afB!=null){const x=af-afB;dAf=`<span class="delta ${x>=0?"up":"down"}">${x>=0?"+":"−"}${Math.abs(x).toFixed(2)}x vs ${VS}</span>`}
   const c=act.colocacion,cB=ant&&ant.colocacion;
   let vC="Pendiente",sC="",dC="";
-  if(c){vC=mdp(c.monto);sC=`<div class="delta">${c.creditos.toLocaleString("en-US")} créditos · ${rango(c)}</div>`;dC=delta(c.monto,cB?cB.monto:null);const aj=ajustes(act.fecha)[c.hasta];if(aj&&act.fecha!==c.hasta)sC+=`<div class="delta">Al cierre del dom: ${aj.a.creditos} créditos · ver nota *</div>`}
-  const dd=diario?diaDe(act):null;
-  if(dd)sC+=`<div class="delta">Del día (${ff(act.corte_cartera,false)}): ${mdp(dd.monto)} · ${dd.creditos} créd.</div>`;
-  if(diario&&act.en_curso&&act.en_curso.creditos)sC+=`<div class="delta">En curso (${rango(act.en_curso)}): ${mdp(act.en_curso.monto)} · ${act.en_curso.creditos} créd.</div>`;
+  if(c){vC=mdp(c.monto);sC=`<div class="delta">${c.creditos.toLocaleString("en-US")} créditos · ${rango(c)}</div>`;
+    const pw=diario?semanaUlt(masD(c.desde,-7),act.fecha):(cB&&cB.desde!==c.desde?cB:null);
+    if(pw){const x=c.monto-pw.monto;dC=Math.abs(x)<0.5?`<span class="delta">igual que la semana anterior</span>`:`<span class="delta ${x>0?"up":"down"}">${x>0?"+":"−"}${mdp(Math.abs(x)).slice(1)} vs semana anterior</span>`}}
+  const ms=diario?mesDe(act):null;
+  if(ms)dC+=`<div class="mes"><div class="t2">Acumulado ${MESL[dt(ms.desde).getUTCMonth()]}</div><div class="v2">${mdp(ms.monto)}</div><div class="delta">${ms.creditos.toLocaleString("en-US")} créditos · ${ff(ms.desde,false)} – ${ff(ms.hasta,false)}</div></div>`;
   document.getElementById("tiles").innerHTML=[
     tile("Capital de cartera",mdp(act.cartera),delta(act.cartera,ant?ant.cartera:null),act.corte_cartera?`<div class="delta">Corte ${ff(act.corte_cartera,false)}</div>`:""),
     tile("Colocación semanal",vC,dC,sC,"sky"),

@@ -24,6 +24,12 @@ Si datos.json no los trae, se leen de sistema/lineas.enc, cifrado con la misma c
 (el repositorio es público: nunca guardes límites sin cifrar). Para crearlo o cambiarlo:
   python3 generar_reporte.py --lineas '{"Covalto": 200000000}' CONTRASEÑA
 
+Colocación acumulada del mes: el HTML la calcula con las semanas cerradas (la cifra más reciente
+de cada semana) más la semana en curso, y le resta lo colocado antes del día 1 si el mes empezó a
+media semana (la "en curso" del último día del mes anterior). Si ese día no tiene renglón, se usa
+un ancla de sistema/anclas.enc (cifrado igual): {"2026-10-31": {"monto": ..., "creditos": ...}}
+  python3 generar_reporte.py --anclas '{"2026-10-31": {"monto": 10077014.2, "creditos": 55}}' CONTRASEÑA
+
 El navegador muestra un selector de fecha: en modo "semanal" solo se puede ver un lunes;
 en modo "diario", cualquier día con datos. El contenido se comprime y se cifra con
 AES-256-GCM (llave PBKDF2-SHA256, 310,000 iteraciones). Sin la contraseña no se ve
@@ -97,6 +103,7 @@ svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);b
 .leyenda span{display:inline-flex;align-items:center;gap:8px}.sw{display:inline-block;width:18px;height:4px;border-radius:2px}.sw.car{background:var(--acc)}.sw.deu{background:var(--sky)}
 .ejes text{fill:var(--muted);font-size:11px}
 .lbl-mov{fill:var(--acc);font-size:10.5px;font-weight:600}.leyenda .mov{color:var(--acc);font-size:12px}
+.mes{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}.mes .t2{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.mes .v2{font-size:22px;font-weight:700;line-height:1.25;margin-top:2px}
 .l-caja{fill:none;stroke:var(--mentat);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.l-caja.est{stroke-dasharray:2 6;stroke-width:2.5}
 .pt-caja{fill:var(--mentat)}.lbl-caja{fill:var(--mentat);font-size:11.5px;font-weight:600}.area-caja{fill:var(--menta);opacity:.3}
 .bar{fill:var(--sky)}.bar.fin{opacity:.45}.grid{stroke:var(--line);stroke-width:1}.eje{fill:var(--muted);font-size:10.5px}
@@ -225,6 +232,19 @@ function grafCaja(act){
   s+=`<g class="ejes">${cols.map((p,i)=>esL(p.fecha)||i===n-1||i===0?`<text x="${f(X(i))}" y="${H-10}" text-anchor="middle">${ff(p.fecha,false)}</text>`:"").join("")}</g></svg>`;
   const hayEst=ok.some(est);
   return s+`<div class="leyenda"><span><i class="sw caja"></i>Saldo en caja</span><span><i class="sw bar"></i>Colocación del día</span>${fila?'<span><i class="sw mk"></i>Disposición / pago de deuda</span>':""}${hayEst?'<span><i class="sw est"></i>Sin correo de saldos (se repite el último)</span>':""}</div>`}
+const lunes=s=>{const d=dt(s);return iso(new Date(d.getTime()-((d.getUTCDay()+6)%7)*864e5))};
+const masD=(s,n)=>iso(new Date(dt(s).getTime()+n*864e5));
+function semanaUlt(desde,lim){let r=null;D.p.forEach(p=>{if(p.fecha<=lim&&p.colocacion&&p.colocacion.desde===desde)r=p.colocacion});return r}
+function curso(f,desde){const p=PC[f]||D.p.find(x=>x.fecha===f),k=(D.k||{})[f];
+  if(p){const e=p.en_curso;if(e&&e.desde===desde)return{monto:e.monto,creditos:e.creditos};if(dt(f).getUTCDay()!==0&&(!e||!e.creditos))return{monto:0,creditos:0}}
+  return k?{monto:k.monto,creditos:k.creditos}:null}
+function mesDe(p){const X=p.corte_cartera;if(!X)return null;const M0=X.slice(0,8)+"01",w0=lunes(M0);let m=0,n=0;
+  for(let w=w0;w<=X;w=masD(w,7)){const fin=masD(w,6);
+    if(fin<=X){const c=semanaUlt(w,p.fecha);if(!c)return null;m+=c.monto;n+=c.creditos}
+    else{const c=curso(X,w);if(!c)return null;m+=c.monto;n+=c.creditos}}
+  if(w0<M0){const prev=masD(M0,-1),c=curso(prev,w0);if(!c)return null;m-=c.monto;n-=c.creditos}
+  return{monto:m,creditos:n,desde:M0,hasta:X}}
+const MESL=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 function ajustes(lim){const W={};D.p.forEach(p=>{const c=p.colocacion;if(p.fecha>lim||!c)return;const k=c.desde+"|"+c.hasta;(W[k]=W[k]||[]).push(p)});
   const out={};Object.values(W).forEach(ps=>{const w=ps[0].colocacion,dom=ps.find(p=>p.fecha===w.hasta),u=ps[ps.length-1];if(!dom||u===dom)return;
     const a=dom.colocacion,b=u.colocacion,dn=b.creditos-a.creditos,dm=b.monto-a.monto;if(dn===0&&Math.abs(dm)<1)return;out[dom.fecha]={a,b,u,dn,dm}});return out}
@@ -244,10 +264,11 @@ function pintar(sel){
   let dAf="";if(afB!=null){const x=af-afB;dAf=`<span class="delta ${x>=0?"up":"down"}">${x>=0?"+":"−"}${Math.abs(x).toFixed(2)}x vs ${VS}</span>`}
   const c=act.colocacion,cB=ant&&ant.colocacion;
   let vC="Pendiente",sC="",dC="";
-  if(c){vC=mdp(c.monto);sC=`<div class="delta">${c.creditos.toLocaleString("en-US")} créditos · ${rango(c)}</div>`;dC=delta(c.monto,cB?cB.monto:null);const aj=ajustes(act.fecha)[c.hasta];if(aj&&act.fecha!==c.hasta)sC+=`<div class="delta">Al cierre del dom: ${aj.a.creditos} créditos · ver nota *</div>`}
-  const dd=diario?diaDe(act):null;
-  if(dd)sC+=`<div class="delta">Del día (${ff(act.corte_cartera,false)}): ${mdp(dd.monto)} · ${dd.creditos} créd.</div>`;
-  if(diario&&act.en_curso&&act.en_curso.creditos)sC+=`<div class="delta">En curso (${rango(act.en_curso)}): ${mdp(act.en_curso.monto)} · ${act.en_curso.creditos} créd.</div>`;
+  if(c){vC=mdp(c.monto);sC=`<div class="delta">${c.creditos.toLocaleString("en-US")} créditos · ${rango(c)}</div>`;
+    const pw=diario?semanaUlt(masD(c.desde,-7),act.fecha):(cB&&cB.desde!==c.desde?cB:null);
+    if(pw){const x=c.monto-pw.monto;dC=Math.abs(x)<0.5?`<span class="delta">igual que la semana anterior</span>`:`<span class="delta ${x>0?"up":"down"}">${x>0?"+":"−"}${mdp(Math.abs(x)).slice(1)} vs semana anterior</span>`}}
+  const ms=diario?mesDe(act):null;
+  if(ms)dC+=`<div class="mes"><div class="t2">Acumulado ${MESL[dt(ms.desde).getUTCMonth()]}</div><div class="v2">${mdp(ms.monto)}</div><div class="delta">${ms.creditos.toLocaleString("en-US")} créditos · ${ff(ms.desde,false)} – ${ff(ms.hasta,false)}</div></div>`;
   document.getElementById("tiles").innerHTML=[
     tile("Capital de cartera",mdp(act.cartera),delta(act.cartera,ant?ant.cartera:null),act.corte_cartera?`<div class="delta">Corte ${ff(act.corte_cartera,false)}</div>`:""),
     tile("Colocación semanal",vC,dC,sC,"sky"),
@@ -333,26 +354,27 @@ def cargar(d):
 
 
 LINEAS_ENC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lineas.enc")
+ANCLAS_ENC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "anclas.enc")
 
 
 def _llave(password, salt):
     return PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=ITER).derive(password.encode("utf-8"))
 
 
-def leer_lineas(password):
-    if not os.path.exists(LINEAS_ENC):
+def leer_lineas(password, ruta=LINEAS_ENC):
+    if not os.path.exists(ruta):
         return {}
-    with open(LINEAS_ENC, encoding="utf-8") as fh:
+    with open(ruta, encoding="utf-8") as fh:
         j = json.load(fh)
     b = lambda k: base64.b64decode(j[k])
     return json.loads(AESGCM(_llave(password, b("salt"))).decrypt(b("iv"), b("data"), None))
 
 
-def guardar_lineas(lineas, password):
+def guardar_lineas(lineas, password, ruta=LINEAS_ENC):
     salt, iv = os.urandom(16), os.urandom(12)
     data = AESGCM(_llave(password, salt)).encrypt(iv, json.dumps(lineas).encode("utf-8"), None)
     e = lambda x: base64.b64encode(x).decode()
-    with open(LINEAS_ENC, "w", encoding="utf-8") as fh:
+    with open(ruta, "w", encoding="utf-8") as fh:
         json.dump({"salt": e(salt), "iv": e(iv), "data": e(data)}, fh)
 
 
@@ -363,6 +385,9 @@ def main(entrada, salida, password):
     lineas = datos.get("lineas") or leer_lineas(password)
     if lineas:
         carga["l"] = lineas
+    anclas = datos.get("anclas") or leer_lineas(password, ANCLAS_ENC)
+    if anclas:
+        carga["k"] = anclas
     plano = gzip.compress(json.dumps(carga, ensure_ascii=False, separators=(",", ":")).encode("utf-8"), 9, mtime=0)
     salt, iv = os.urandom(16), os.urandom(12)
     key = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=ITER).derive(password.encode("utf-8"))
@@ -381,5 +406,7 @@ def main(entrada, salida, password):
 if __name__ == "__main__":
     if sys.argv[1] == "--lineas":
         guardar_lineas(json.loads(sys.argv[2]), sys.argv[3])
+    elif sys.argv[1] == "--anclas":
+        guardar_lineas(json.loads(sys.argv[2]), sys.argv[3], ANCLAS_ENC)
     else:
         main(*sys.argv[1:4])
